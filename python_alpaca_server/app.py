@@ -5,12 +5,12 @@ from typing import Dict, List, Callable
 import structlog
 from fastapi import FastAPI
 
-from .common_api import create_router as create_common_router
+from .api.common_api import create_router as create_common_router
 from .device import Device, DeviceType
 from .discovery import DiscoveryServer
-from .management_api import create_router as create_management_router, Description
+from .api.management_api import create_router as create_management_router, Description
 from .middleware import ErrorHandlerMiddleware
-from .safetymonitor_api import create_router as create_safetymonitor_router
+from .api.safetymonitor_api import create_router as create_safetymonitor_router
 
 logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
 

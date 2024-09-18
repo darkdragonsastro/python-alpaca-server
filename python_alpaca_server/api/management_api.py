@@ -3,8 +3,8 @@ from typing import Annotated, List, Callable
 from fastapi import APIRouter, Query
 from pydantic import BaseModel
 
-from .device import Device, DeviceType
-from .response import CommonRequest, Response, common_endpoint_parameters
+from ..device import Device, DeviceType
+from ..response import CommonRequest, Response, common_endpoint_parameters
 
 
 class Description(BaseModel):
