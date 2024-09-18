@@ -158,6 +158,21 @@ class PutPositionRequest(CommonRequest):
                 )
 
 
+class PutPositionFloatRequest(CommonRequest):
+    Position: float
+
+    @field_validator("Position", mode="before")
+    @classmethod
+    def check_int(cls, value):
+        if value is not None:
+            try:
+                return float(value)
+            except ValueError:
+                raise HTTPException(
+                    status_code=400, detail="Invalid value for Position"
+                )
+
+
 class PutTempCompRequest(CommonRequest):
     TempComp: int
 
@@ -190,3 +205,25 @@ class PutAveragePeriodRequest(CommonRequest):
 
 class SensorNameRequest(CommonRequest):
     SensorName: str
+
+
+class PutReverseRequest(CommonRequest):
+    Reverse: bool
+
+    @field_validator("Reverse", mode="before")
+    @classmethod
+    def check_bool(cls, value):
+        if value is not None:
+            if isinstance(value, str):
+                if value.lower() in ["true", "1"]:
+                    return True
+                elif value.lower() in ["false", "0"]:
+                    return False
+            elif isinstance(value, int):
+                if value == 1:
+                    return True
+                elif value == 0:
+                    return False
+            elif isinstance(value, bool):
+                return value
+        raise HTTPException(status_code=400, detail="Invalid value for Reverse")
