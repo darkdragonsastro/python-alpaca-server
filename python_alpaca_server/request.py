@@ -115,7 +115,7 @@ class PutSlavedRequest(CommonRequest):
         raise HTTPException(status_code=400, detail="Invalid value for Slaved")
 
 
-class PutAltitudeRequest(BaseModel):
+class PutAltitudeRequest(CommonRequest):
     Altitude: float
 
     @field_validator("Altitude", mode="before")
@@ -130,7 +130,7 @@ class PutAltitudeRequest(BaseModel):
                 )
 
 
-class PutAzimuthRequest(BaseModel):
+class PutAzimuthRequest(CommonRequest):
     Azimuth: float
 
     @field_validator("Azimuth", mode="before")
@@ -143,7 +143,7 @@ class PutAzimuthRequest(BaseModel):
                 raise HTTPException(status_code=400, detail="Invalid value for Azimuth")
 
 
-class PutPositionRequest(BaseModel):
+class PutPositionRequest(CommonRequest):
     Position: int
 
     @field_validator("Position", mode="before")
@@ -158,7 +158,7 @@ class PutPositionRequest(BaseModel):
                 )
 
 
-class PutTempCompRequest(BaseModel):
+class PutTempCompRequest(CommonRequest):
     TempComp: int
 
     @field_validator("TempComp", mode="before")
@@ -171,3 +171,22 @@ class PutTempCompRequest(BaseModel):
                 raise HTTPException(
                     status_code=400, detail="Invalid value for TempComp"
                 )
+
+
+class PutAveragePeriodRequest(CommonRequest):
+    AveragePeriod: float
+
+    @field_validator("AveragePeriod", mode="before")
+    @classmethod
+    def check_float(cls, value):
+        if value is not None:
+            try:
+                return float(value)
+            except ValueError:
+                raise HTTPException(
+                    status_code=400, detail="Invalid value for AveragePeriod"
+                )
+
+
+class SensorNameRequest(CommonRequest):
+    SensorName: str
