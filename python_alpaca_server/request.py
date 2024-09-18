@@ -227,3 +227,85 @@ class PutReverseRequest(CommonRequest):
             elif isinstance(value, bool):
                 return value
         raise HTTPException(status_code=400, detail="Invalid value for Reverse")
+
+
+class IdRequest(CommonRequest):
+    Id: int
+
+    @field_validator("Id", mode="before")
+    @classmethod
+    def check_int(cls, value):
+        if value is not None:
+            try:
+                return int(value)
+            except ValueError:
+                raise HTTPException(status_code=400, detail="Invalid value for Id")
+
+
+class PutIdValueRequest(CommonRequest):
+    Id: int
+    Value: float
+
+    @field_validator("Id", mode="before")
+    @classmethod
+    def check_int(cls, value):
+        if value is not None:
+            try:
+                return int(value)
+            except ValueError:
+                raise HTTPException(status_code=400, detail="Invalid value for Id")
+
+    @field_validator("Value", mode="before")
+    @classmethod
+    def check_float(cls, value):
+        if value is not None:
+            try:
+                return float(value)
+            except ValueError:
+                raise HTTPException(status_code=400, detail="Invalid value for Value")
+
+
+class PutIdNameRequest(CommonRequest):
+    Id: int
+    Name: str
+
+    @field_validator("Id", mode="before")
+    @classmethod
+    def check_int(cls, value):
+        if value is not None:
+            try:
+                return int(value)
+            except ValueError:
+                raise HTTPException(status_code=400, detail="Invalid value for Id")
+
+
+class PutIdStateRequest(CommonRequest):
+    Id: int
+    State: bool
+
+    @field_validator("Id", mode="before")
+    @classmethod
+    def check_int(cls, value):
+        if value is not None:
+            try:
+                return int(value)
+            except ValueError:
+                raise HTTPException(status_code=400, detail="Invalid value for Id")
+
+    @field_validator("State", mode="before")
+    @classmethod
+    def check_bool(cls, value):
+        if value is not None:
+            if isinstance(value, str):
+                if value.lower() in ["true", "1"]:
+                    return True
+                elif value.lower() in ["false", "0"]:
+                    return False
+            elif isinstance(value, int):
+                if value == 1:
+                    return True
+                elif value == 0:
+                    return False
+            elif isinstance(value, bool):
+                return value
+        raise HTTPException(status_code=400, detail="Invalid value for State")
