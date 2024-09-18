@@ -12,7 +12,6 @@ from .request import (
     ActionRequest,
     PutConnectedRequest,
     CommandRequest,
-    PutBrightnessRequest,
 )
 
 logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
@@ -96,74 +95,6 @@ class Device(ABC):
 
     @abstractmethod
     def get_supportedactions(self, req: CommonRequest) -> List[str]:
-        raise NotImplementedError(req)
-
-
-class CalibratorState(int, Enum):
-    NotPresent = 0
-    Off = 1
-    NotReady = 2
-    Ready = 3
-    Unknown = 4
-    Error = 5
-
-
-class CoverState(int, Enum):
-    NotPresent = 0
-    Closed = 1
-    Moving = 2
-    Open = 3
-    Unknown = 4
-    Error = 5
-
-
-class CoverCalibrator(Device):
-    def __init__(self, unique_id: str):
-        super().__init__(DeviceType.CoverCalibrator, unique_id)
-
-    @abstractmethod
-    def get_brightness(self, req: CommonRequest) -> int:
-        raise NotImplementedError(req)
-
-    @abstractmethod
-    def get_calibratorstate(self, req: CommonRequest) -> CalibratorState:
-        raise NotImplementedError(req)
-
-    @abstractmethod
-    def get_coverstate(self, req: CommonRequest) -> CoverState:
-        raise NotImplementedError(req)
-
-    @abstractmethod
-    def get_maxbrightness(self, req: CommonRequest) -> int:
-        raise NotImplementedError(req)
-
-    @abstractmethod
-    def put_calibratoroff(self, req: CommonRequest) -> str:
-        raise NotImplementedError(req)
-
-    @abstractmethod
-    def put_calibratoron(self, req: PutBrightnessRequest) -> str:
-        raise NotImplementedError(req)
-
-    @abstractmethod
-    def put_closecover(self, req: CommonRequest) -> str:
-        raise NotImplementedError(req)
-
-    @abstractmethod
-    def put_haltcover(self, req: CommonRequest) -> str:
-        raise NotImplementedError(req)
-
-    @abstractmethod
-    def put_opencover(self, req: CommonRequest) -> str:
-        raise NotImplementedError(req)
-
-
-class SafetyMonitor(Device):
-    def __init__(self, unique_id: str):
-        super().__init__(DeviceType.SafetyMonitor, unique_id)
-
-    @abstractmethod
-    def get_issafe(self, req: CommonRequest) -> bool:
         raise NotImplementedError(req)
 
 

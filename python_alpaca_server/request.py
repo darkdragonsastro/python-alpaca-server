@@ -25,6 +25,7 @@ class CommonRequest(BaseModel):
     ServerTransactionID: int = Field(default_factory=_server_transaction_id)
 
     @model_validator(mode="before")
+    @classmethod
     def body_params_case_insensitive(cls, values: dict):
         for field in cls.model_fields:
             in_fields = list(
@@ -35,16 +36,9 @@ class CommonRequest(BaseModel):
 
         return values
 
-    @field_validator("ClientTransactionID", mode="before")
-    def check_client_transaction_id(cls, value):
-        if value is not None:
-            try:
-                return int(value)
-            except ValueError:
-                return 0
-
-    @field_validator("ClientID", mode="before")
-    def check_client_id(cls, value):
+    @field_validator("ClientTransactionID", "ClientID", mode="before")
+    @classmethod
+    def check_int_not_required(cls, value):
         if value is not None:
             try:
                 return int(value)
@@ -66,7 +60,8 @@ class PutConnectedRequest(CommonRequest):
     Connected: bool
 
     @field_validator("Connected", mode="before")
-    def check_connected(cls, value):
+    @classmethod
+    def check_bool(cls, value):
         if value is not None:
             if isinstance(value, str):
                 if value.lower() in ["true", "1"]:
@@ -87,9 +82,62 @@ class PutBrightnessRequest(BaseModel):
     Brightness: int
 
     @field_validator("Brightness", mode="before")
-    def check_brightness(cls, value):
+    @classmethod
+    def check_int(cls, value):
         if value is not None:
             try:
                 return int(value)
             except ValueError:
-                return 0
+                raise HTTPException(
+                    status_code=400, detail="Invalid value for Brightness"
+                )
+
+
+class PutSlavedRequest(CommonRequest):
+    Slaved: bool
+
+    @field_validator("Slaved", mode="before")
+    @classmethod
+    def check_bool(cls, value):
+        if value is not None:
+            if isinstance(value, str):
+                if value.lower() in ["true", "1"]:
+                    return True
+                elif value.lower() in ["false", "0"]:
+                    return False
+            elif isinstance(value, int):
+                if value == 1:
+                    return True
+                elif value == 0:
+                    return False
+            elif isinstance(value, bool):
+                return value
+        raise HTTPException(status_code=400, detail="Invalid value for Slaved")
+
+
+class PutAltitudeRequest(BaseModel):
+    Altitude: float
+
+    @field_validator("Altitude", mode="before")
+    @classmethod
+    def check_float(cls, value):
+        if value is not None:
+            try:
+                return float(value)
+            except ValueError:
+                raise HTTPException(
+                    status_code=400, detail="Invalid value for Altitude"
+                )
+
+
+class PutAzimuthRequest(BaseModel):
+    Azimuth: float
+
+    @field_validator("Azimuth", mode="before")
+    @classmethod
+    def check_float(cls, value):
+        if value is not None:
+            try:
+                return float(value)
+            except ValueError:
+                raise HTTPException(status_code=400, detail="Invalid value for Azimuth")
