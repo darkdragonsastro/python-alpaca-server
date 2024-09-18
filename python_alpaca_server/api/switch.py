@@ -124,4 +124,54 @@ def create_router(devices: List[Device]):
         **common_endpoint_parameters,
     )(get_maxswitch)
 
+    router.get(
+        "/switch/{device_number}/canwrite",
+        **common_endpoint_parameters,
+    )(get_canwrite)
+
+    router.get(
+        "/switch/{device_number}/getswitch",
+        **common_endpoint_parameters,
+    )(get_getswitch)
+
+    router.get(
+        "/switch/{device_number}/getswitchdescription",
+        **common_endpoint_parameters,
+    )(get_getswitchdescription)
+
+    router.get(
+        "/switch/{device_number}/getswitchname",
+        **common_endpoint_parameters,
+    )(get_getswitchname)
+
+    router.get(
+        "/switch/{device_number}/getswitchvalue",
+        **common_endpoint_parameters,
+    )(get_getswitchvalue)
+
+    router.get(
+        "/switch/{device_number}/minswitchvalue",
+        **common_endpoint_parameters,
+    )(get_minswitchvalue)
+
+    router.get(
+        "/switch/{device_number}/maxswitchvalue",
+        **common_endpoint_parameters,
+    )(get_maxswitchvalue)
+
+    router.put(
+        "/switch/{device_number}/setswitch",
+        **common_endpoint_parameters,
+    )(put_setswitch)
+
+    router.put(
+        "/switch/{device_number}/setswitchname",
+        **common_endpoint_parameters,
+    )(put_setswitchname)
+
+    router.put(
+        "/switch/{device_number}/setswitchvalue",
+        **common_endpoint_parameters,
+    )(put_setswitchvalue)
+
     return router
