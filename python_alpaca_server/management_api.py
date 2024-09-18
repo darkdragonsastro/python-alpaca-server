@@ -1,4 +1,4 @@
-from typing import Annotated, List
+from typing import Annotated, List, Callable
 
 from fastapi import APIRouter, Query
 from pydantic import BaseModel
@@ -21,7 +21,7 @@ class ConfiguredDevice(BaseModel):
     UniqueID: str
 
 
-def create_router(devices: List[Device]):
+def create_router(desc: Callable[[], Description] | Description, devices: List[Device]):
     router = APIRouter()
 
     @router.get(
@@ -42,12 +42,7 @@ def create_router(devices: List[Device]):
     ) -> Response[Description]:
         return Response[Description].from_request(
             req,
-            Description(
-                ServerName="Dark Dragons Python Alpaca Server",
-                Manufacturer="Dark Dragons Astronomy",
-                ManufacturerVersion="1.0.0",
-                Location="Observatory",
-            ),
+            desc() if callable(desc) else desc,
         )
 
     @router.get(

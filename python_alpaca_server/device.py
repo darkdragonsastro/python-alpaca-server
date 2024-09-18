@@ -44,15 +44,19 @@ class Device(ABC):
         self.unique_id = unique_id
         self.device_number: int = -1
 
+    @abstractmethod
     def put_action(self, req: ActionRequest) -> str:
         raise NotImplementedError(req)
 
+    @abstractmethod
     def put_command_blind(self, req: CommandRequest) -> None:
         raise NotImplementedError(req)
 
+    @abstractmethod
     def put_command_bool(self, req: CommandRequest) -> bool:
         raise NotImplementedError(req)
 
+    @abstractmethod
     def put_command_string(self, req: CommandRequest) -> str:
         raise NotImplementedError(req)
 

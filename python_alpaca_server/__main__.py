@@ -1,14 +1,30 @@
 from typing import List, override
 
-from .app import AlpacaServer
+from .app import AlpacaServer, Description
 from .device import SafetyMonitor
-from .request import CommonRequest, PutConnectedRequest
+from .request import CommonRequest, PutConnectedRequest, ActionRequest, CommandRequest
 
 
 class MySafetyMonitor(SafetyMonitor):
     def __init__(self, unique_id: str):
         super().__init__(unique_id)
         self._connected = False
+
+    @override
+    def put_action(self, req: ActionRequest) -> str:
+        raise NotImplementedError(req)
+
+    @override
+    def put_command_blind(self, req: CommandRequest) -> None:
+        raise NotImplementedError(req)
+
+    @override
+    def put_command_bool(self, req: CommandRequest) -> bool:
+        raise NotImplementedError(req)
+
+    @override
+    def put_command_string(self, req: CommandRequest) -> str:
+        raise NotImplementedError(req)
 
     @override
     def get_connected(self, req: CommonRequest) -> bool:
@@ -50,12 +66,21 @@ class MySafetyMonitor(SafetyMonitor):
         return False
 
 
+def get_server_description() -> Description:
+    return Description(
+        ServerName="MyServer",
+        Manufacturer="MyManufacturer",
+        ManufacturerVersion="0.1.0",
+        Location="MyLocation",
+    )
+
+
 if __name__ == "__main__":
     import uvicorn
 
     port = 8000
 
-    svr = AlpacaServer([MySafetyMonitor("other")])
+    svr = AlpacaServer(get_server_description, [MySafetyMonitor("other")])
     app = svr.create_app(port)
 
     try:
