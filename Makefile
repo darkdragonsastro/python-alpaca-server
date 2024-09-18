@@ -16,5 +16,4 @@ bump:
 	cz bump
 
 commit:
-	git add .
-	git cz
+	cz commit
