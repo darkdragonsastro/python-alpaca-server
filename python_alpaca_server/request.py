@@ -156,3 +156,18 @@ class PutPositionRequest(BaseModel):
                 raise HTTPException(
                     status_code=400, detail="Invalid value for Position"
                 )
+
+
+class PutTempCompRequest(BaseModel):
+    TempComp: int
+
+    @field_validator("TempComp", mode="before")
+    @classmethod
+    def check_int(cls, value):
+        if value is not None:
+            try:
+                return int(value)
+            except ValueError:
+                raise HTTPException(
+                    status_code=400, detail="Invalid value for TempComp"
+                )
