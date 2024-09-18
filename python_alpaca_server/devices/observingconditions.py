@@ -9,7 +9,7 @@ class ObservingConditions(Device):
         super().__init__(DeviceType.ObservingConditions, unique_id)
 
     @abstractmethod
-    def get_averageperiod(self, req: CommonRequest) -> bool:
+    def get_averageperiod(self, req: CommonRequest) -> float:
         raise NotImplementedError(req)
 
     @abstractmethod
@@ -73,7 +73,7 @@ class ObservingConditions(Device):
         raise NotImplementedError(req)
 
     @abstractmethod
-    def get_sensordescription(self, req: SensorNameRequest) -> float:
+    def get_sensordescription(self, req: SensorNameRequest) -> str:
         raise NotImplementedError(req)
 
     @abstractmethod
