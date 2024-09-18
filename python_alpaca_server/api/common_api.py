@@ -5,8 +5,8 @@ from fastapi import APIRouter, Depends, Form, Query
 
 from ..device import Device, common_device_finder
 from ..errors import NotImplementedError
+from ..request import ActionRequest, CommonRequest, PutConnectedRequest
 from ..response import Response, common_endpoint_parameters
-from ..request import CommonRequest, ActionRequest, PutConnectedRequest
 
 logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
 

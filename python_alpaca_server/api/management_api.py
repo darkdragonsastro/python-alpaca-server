@@ -1,4 +1,4 @@
-from typing import Annotated, List, Callable
+from typing import Annotated, Callable, List
 
 from fastapi import APIRouter, Query
 from pydantic import BaseModel

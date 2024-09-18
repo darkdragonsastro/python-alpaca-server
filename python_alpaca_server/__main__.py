@@ -2,7 +2,7 @@ from typing import List, override
 
 from .app import AlpacaServer, Description
 from .devices.safety_monitor import SafetyMonitor
-from .request import CommonRequest, PutConnectedRequest, ActionRequest, CommandRequest
+from .request import ActionRequest, CommandRequest, CommonRequest, PutConnectedRequest
 
 
 class MySafetyMonitor(SafetyMonitor):

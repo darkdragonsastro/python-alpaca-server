@@ -7,12 +7,7 @@ from fastapi import HTTPException, Path
 from pydantic import BaseModel, field_validator
 
 from .errors import NotImplementedError
-from .request import (
-    CommonRequest,
-    ActionRequest,
-    PutConnectedRequest,
-    CommandRequest,
-)
+from .request import ActionRequest, CommandRequest, CommonRequest, PutConnectedRequest
 
 logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
 

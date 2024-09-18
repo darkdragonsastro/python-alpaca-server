@@ -1,8 +1,9 @@
 import threading
-from typing import Optional, Any
-from pydantic import BaseModel, Field, model_validator, field_validator
+from typing import Any
+
 import structlog
 from fastapi import HTTPException
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
 
@@ -26,6 +27,8 @@ def _lenient_int_validator(value: Any) -> int:
         except ValueError:
             return 0
 
+    return 0
+
 
 def _strict_int_validator(value: Any) -> int:
     if value is not None:
@@ -34,8 +37,10 @@ def _strict_int_validator(value: Any) -> int:
         except ValueError:
             raise HTTPException(status_code=400, detail="invalid integer value")
 
+    raise HTTPException(status_code=400, detail="invalid integer value")
 
-def _strict_bool_validator(value):
+
+def _strict_bool_validator(value) -> bool:
     if value is not None:
         if isinstance(value, str):
             if value.lower() in ["true", "1"]:
@@ -49,20 +54,23 @@ def _strict_bool_validator(value):
                 return False
         elif isinstance(value, bool):
             return value
+
     raise HTTPException(status_code=400, detail="invalid boolean value")
 
 
-def _strict_float_validator(value):
+def _strict_float_validator(value) -> float:
     if value is not None:
         try:
             return float(value)
         except ValueError:
             raise HTTPException(status_code=400, detail="invalid float value")
 
+    raise HTTPException(status_code=400, detail="invalid float value")
+
 
 class CommonRequest(BaseModel):
-    ClientTransactionID: Optional[int] = None
-    ClientID: Optional[int] = None
+    ClientTransactionID: int = 0
+    ClientID: int = 0
     ServerTransactionID: int = Field(default_factory=_server_transaction_id)
 
     @model_validator(mode="before")

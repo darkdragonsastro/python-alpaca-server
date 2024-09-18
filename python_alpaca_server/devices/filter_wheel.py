@@ -1,10 +1,8 @@
-from typing import List
-from ..device import Device, DeviceType
-from ..request import (
-    CommonRequest,
-    PutPositionRequest,
-)
 from abc import abstractmethod
+from typing import List
+
+from ..device import Device, DeviceType
+from ..request import CommonRequest, PutPositionRequest
 
 
 class FilterWheel(Device):

@@ -1,6 +1,7 @@
-from ..device import Device, DeviceType
-from ..request import CommonRequest, PutReverseRequest, PutPositionFloatRequest
 from abc import abstractmethod
+
+from ..device import Device, DeviceType
+from ..request import CommonRequest, PutPositionFloatRequest, PutReverseRequest
 
 
 class Rotator(Device):

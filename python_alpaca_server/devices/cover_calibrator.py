@@ -1,7 +1,8 @@
-from ..device import Device, DeviceType
-from ..request import CommonRequest, PutBrightnessRequest
 from abc import abstractmethod
 from enum import Enum
+
+from ..device import Device, DeviceType
+from ..request import CommonRequest, PutBrightnessRequest
 
 
 class CalibratorState(int, Enum):

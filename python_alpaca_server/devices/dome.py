@@ -1,12 +1,13 @@
+from abc import abstractmethod
+from enum import Enum
+
 from ..device import Device, DeviceType
 from ..request import (
     CommonRequest,
-    PutSlavedRequest,
     PutAltitudeRequest,
     PutAzimuthRequest,
+    PutSlavedRequest,
 )
-from abc import abstractmethod
-from enum import Enum
 
 
 class ShutterState(int, Enum):

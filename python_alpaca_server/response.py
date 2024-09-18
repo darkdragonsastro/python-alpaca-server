@@ -1,17 +1,20 @@
-from typing import Generic, Optional, TypeVar, TypedDict, Dict, Any
+from typing import Any, Dict, Generic, Optional, TypedDict, TypeVar
 
 import structlog
 from pydantic import BaseModel
-from .request import CommonRequest
 
+from .request import CommonRequest
 
 logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
 
-common_responses = {400: {"model": str}, 500: {"model": str}}
+common_responses: dict[int | str, dict[str, Any]] = {
+    400: {"model": str},
+    500: {"model": str},
+}
 
 
 class EndpointParameters(TypedDict):
-    responses: Dict[int, Dict[str, Any]]
+    responses: Dict[int | str, Dict[str, Any]]
     response_model_exclude_unset: bool
     response_model_exclude_none: bool
 

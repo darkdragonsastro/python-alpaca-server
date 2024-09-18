@@ -26,7 +26,7 @@ class NotImplementedError(AlpacaError):
             "not implemented",
             req.ClientTransactionID,
             req.ClientID,
-            0,
+            req.ServerTransactionID,
         )
 
 
@@ -37,7 +37,7 @@ class InvalidValueError(AlpacaError):
             "invlaid value",
             req.ClientTransactionID,
             req.ClientID,
-            0,
+            req.ServerTransactionID,
         )
 
 
@@ -48,7 +48,7 @@ class ValueNotSetError(AlpacaError):
             "value not set",
             req.ClientTransactionID,
             req.ClientID,
-            0,
+            req.ServerTransactionID,
         )
 
 
@@ -59,7 +59,7 @@ class NotConnectedError(AlpacaError):
             "not connected",
             req.ClientTransactionID,
             req.ClientID,
-            0,
+            req.ServerTransactionID,
         )
 
 
@@ -70,7 +70,7 @@ class InvalidWhileParkedError(AlpacaError):
             "invalid while parked",
             req.ClientTransactionID,
             req.ClientID,
-            0,
+            req.ServerTransactionID,
         )
 
 
@@ -81,7 +81,7 @@ class InvalidWhileSlavedError(AlpacaError):
             "invalid while slaved",
             req.ClientTransactionID,
             req.ClientID,
-            0,
+            req.ServerTransactionID,
         )
 
 
@@ -92,7 +92,7 @@ class InvalidOperationError(AlpacaError):
             "invalid operation",
             req.ClientTransactionID,
             req.ClientID,
-            0,
+            req.ServerTransactionID,
         )
 
 
@@ -103,5 +103,5 @@ class ActionNotImplemented(AlpacaError):
             "action not implemented",
             req.ClientTransactionID,
             req.ClientID,
-            0,
+            req.ServerTransactionID,
         )

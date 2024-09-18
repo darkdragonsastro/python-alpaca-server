@@ -1,6 +1,7 @@
+from abc import abstractmethod
+
 from ..device import Device, DeviceType
 from ..request import CommonRequest
-from abc import abstractmethod
 
 
 class SafetyMonitor(Device):

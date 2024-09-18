@@ -1,6 +1,7 @@
-from ..device import Device, DeviceType
-from ..request import CommonRequest, PutTempCompRequest, PutPositionRequest
 from abc import abstractmethod
+
+from ..device import Device, DeviceType
+from ..request import CommonRequest, PutPositionRequest, PutTempCompRequest
 
 
 class Focuser(Device):

@@ -1,16 +1,17 @@
 import asyncio
 from contextlib import asynccontextmanager
-from typing import Dict, List, Callable
+from typing import Callable, Dict, List
 
 import structlog
 from fastapi import FastAPI
 
 from .api.common_api import create_router as create_common_router
+from .api.management_api import Description
+from .api.management_api import create_router as create_management_router
+from .api.safetymonitor_api import create_router as create_safetymonitor_router
 from .device import Device, DeviceType
 from .discovery import DiscoveryServer
-from .api.management_api import create_router as create_management_router, Description
 from .middleware import ErrorHandlerMiddleware
-from .api.safetymonitor_api import create_router as create_safetymonitor_router
 
 logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
 

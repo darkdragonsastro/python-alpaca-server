@@ -1,12 +1,13 @@
+from abc import abstractmethod
+
 from ..device import Device, DeviceType
 from ..request import (
     CommonRequest,
     IdRequest,
-    PutIdValueRequest,
     PutIdNameRequest,
     PutIdStateRequest,
+    PutIdValueRequest,
 )
-from abc import abstractmethod
 
 
 class Switch(Device):

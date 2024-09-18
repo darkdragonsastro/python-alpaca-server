@@ -1,6 +1,7 @@
-from ..device import Device, DeviceType
-from ..request import CommonRequest, SensorNameRequest, PutAveragePeriodRequest
 from abc import abstractmethod
+
+from ..device import Device, DeviceType
+from ..request import CommonRequest, PutAveragePeriodRequest, SensorNameRequest
 
 
 class ObservingConditions(Device):

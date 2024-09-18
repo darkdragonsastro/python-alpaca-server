@@ -6,8 +6,8 @@ from pydantic import BaseModel
 
 from ..device import Device, UrlDeviceType, device_finder
 from ..devices.safety_monitor import SafetyMonitor
-from ..response import Response, common_endpoint_parameters
 from ..request import CommonRequest
+from ..response import Response, common_endpoint_parameters
 
 logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
 
