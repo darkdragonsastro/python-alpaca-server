@@ -5,10 +5,10 @@ from typing import Callable, Dict, List
 import structlog
 from fastapi import FastAPI
 
-from .api.common_api import create_router as create_common_router
-from .api.management_api import Description
-from .api.management_api import create_router as create_management_router
-from .api.safetymonitor_api import create_router as create_safetymonitor_router
+from .api.common import create_router as create_common_router
+from .api.management import Description
+from .api.management import create_router as create_management_router
+from .api.safetymonitor import create_router as create_safetymonitor_router
 from .device import Device, DeviceType
 from .discovery import DiscoveryServer
 from .middleware import ErrorHandlerMiddleware
