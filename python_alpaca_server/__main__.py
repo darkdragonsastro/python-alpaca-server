@@ -53,8 +53,12 @@ class MySafetyMonitor(SafetyMonitor):
 if __name__ == "__main__":
     import uvicorn
 
+    port = 8000
+
     svr = AlpacaServer([MySafetyMonitor("other")])
+    app = svr.create_app(port)
 
-    app = svr.create_app(8000)
-
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    try:
+        uvicorn.run(app, host="0.0.0.0", port=port)
+    except KeyboardInterrupt:
+        pass

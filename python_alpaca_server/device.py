@@ -4,6 +4,7 @@ from typing import Annotated, List, Optional
 
 import structlog
 from fastapi import HTTPException, Path
+from pydantic import BaseModel, field_validator
 
 from .errors import NotImplementedError
 from .request import CommonRequest, ActionRequest, PutConnectedRequest, CommandRequest
@@ -97,21 +98,46 @@ class SafetyMonitor(Device):
         raise NotImplementedError(req)
 
 
+class PathArgs(BaseModel):
+    device_number: int
+    device_type: Optional[UrlDeviceType] = None
+
+    @field_validator("device_number", mode="before")
+    def check_device_number(cls, value):
+        if value is not None:
+            try:
+                return int(value)
+            except ValueError:
+                raise HTTPException(status_code=400, detail="Invalid device number")
+
+        raise HTTPException(status_code=400, detail="Invalid device number")
+
+    @field_validator("device_type", mode="before")
+    def check_device_type(cls, value):
+        if value is not None:
+            try:
+                return UrlDeviceType(value)
+            except ValueError:
+                raise HTTPException(status_code=400, detail="Invalid device type")
+
+        return None
+
+
 def device_finder(devices: List[Device], device_type: UrlDeviceType):
     def find_device(
-        device_number: Annotated[int, Path()],
-        device_type: Annotated[UrlDeviceType, Path()] = device_type,
+        args: Annotated[PathArgs, Path()],
     ) -> Device:
         logger.debug(
-            "looking for device", device_type=device_type, device_number=device_number
+            "looking for device",
+            device_type=device_type,
+            device_number=args.device_number,
         )
         device: Optional[Device] = None
         for d in devices:
             if (
-                d.device_number == device_number
+                d.device_number == args.device_number
                 and d.device_type.value.lower() == device_type.value.lower()
             ):
-                logger.debug("found device")
                 device = d
 
         if not device:
@@ -124,19 +150,23 @@ def device_finder(devices: List[Device], device_type: UrlDeviceType):
 
 def common_device_finder(devices: List[Device]):
     def find_device(
-        device_number: Annotated[int, Path()],
-        device_type: Annotated[UrlDeviceType, Path()],
+        args: Annotated[PathArgs, Path()],
     ) -> Device:
         logger.debug(
-            "looking for device", device_type=device_type, device_number=device_number
+            "looking for device",
+            device_type=args.device_type,
+            device_number=args.device_number,
         )
+
+        if args.device_type is None:
+            raise HTTPException(status_code=400, detail="Invalid device type")
+
         device: Optional[Device] = None
         for d in devices:
             if (
-                d.device_number == device_number
-                and d.device_type.value.lower() == device_type.value.lower()
+                d.device_number == args.device_number
+                and d.device_type.value.lower() == args.device_type.value.lower()
             ):
-                logger.debug("found device")
                 device = d
 
         if not device:

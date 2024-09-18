@@ -22,40 +22,86 @@ class AlpacaError(Exception):
 class NotImplementedError(AlpacaError):
     def __init__(self, req: CommonRequest):
         super().__init__(
-            0x400, "not implemented", req.ClientTransactionID, req.ClientID, 0
+            0x400,
+            "not implemented",
+            req.ClientTransactionID,
+            req.ClientID,
+            0,
         )
 
 
 class InvalidValueError(AlpacaError):
-    def __init__(self):
-        super().__init__(0x401, "invlaid value")
+    def __init__(self, req: CommonRequest):
+        super().__init__(
+            0x401,
+            "invlaid value",
+            req.ClientTransactionID,
+            req.ClientID,
+            0,
+        )
 
 
 class ValueNotSetError(AlpacaError):
-    def __init__(self):
-        super().__init__(0x402, "value not set")
+    def __init__(self, req: CommonRequest):
+        super().__init__(
+            0x402,
+            "value not set",
+            req.ClientTransactionID,
+            req.ClientID,
+            0,
+        )
 
 
 class NotConnectedError(AlpacaError):
-    def __init__(self):
-        super().__init__(0x407, "not connected")
+    def __init__(self, req: CommonRequest):
+        super().__init__(
+            0x407,
+            "not connected",
+            req.ClientTransactionID,
+            req.ClientID,
+            0,
+        )
 
 
 class InvalidWhileParkedError(AlpacaError):
-    def __init__(self):
-        super().__init__(0x408, "invalid while parked")
+    def __init__(self, req: CommonRequest):
+        super().__init__(
+            0x408,
+            "invalid while parked",
+            req.ClientTransactionID,
+            req.ClientID,
+            0,
+        )
 
 
 class InvalidWhileSlavedError(AlpacaError):
-    def __init__(self):
-        super().__init__(0x409, "invalid while slaved")
+    def __init__(self, req: CommonRequest):
+        super().__init__(
+            0x409,
+            "invalid while slaved",
+            req.ClientTransactionID,
+            req.ClientID,
+            0,
+        )
 
 
 class InvalidOperationError(AlpacaError):
-    def __init__(self):
-        super().__init__(0x40B, "invalid operation")
+    def __init__(self, req: CommonRequest):
+        super().__init__(
+            0x40B,
+            "invalid operation",
+            req.ClientTransactionID,
+            req.ClientID,
+            0,
+        )
 
 
 class ActionNotImplemented(AlpacaError):
-    def __init__(self):
-        super().__init__(0x40C, "action not implemented")
+    def __init__(self, req: CommonRequest):
+        super().__init__(
+            0x40C,
+            "action not implemented",
+            req.ClientTransactionID,
+            req.ClientID,
+            0,
+        )
