@@ -1,3 +1,23 @@
+## 0.4.0 (2024-09-18)
+
+### Feat
+
+- switch api
+- switch api
+- rotator api
+- observingconditions api
+- focuser api
+- filterwheel api
+- dome api
+- covercalibrator api
+
+### Fix
+
+- consistent naming
+- consistent naming
+- make commit
+- code cleanup
+
 ## 0.3.0 (2024-09-18)
 
 ### Feat
