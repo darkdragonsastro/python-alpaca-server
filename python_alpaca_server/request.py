@@ -81,3 +81,15 @@ class PutConnectedRequest(CommonRequest):
             elif isinstance(value, bool):
                 return value
         raise HTTPException(status_code=400, detail="Invalid value for Connected")
+
+
+class PutBrightnessRequest(BaseModel):
+    Brightness: int
+
+    @field_validator("Brightness", mode="before")
+    def check_brightness(cls, value):
+        if value is not None:
+            try:
+                return int(value)
+            except ValueError:
+                return 0
