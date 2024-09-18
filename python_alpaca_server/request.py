@@ -141,3 +141,18 @@ class PutAzimuthRequest(BaseModel):
                 return float(value)
             except ValueError:
                 raise HTTPException(status_code=400, detail="Invalid value for Azimuth")
+
+
+class PutPositionRequest(BaseModel):
+    Position: int
+
+    @field_validator("Position", mode="before")
+    @classmethod
+    def check_int(cls, value):
+        if value is not None:
+            try:
+                return int(value)
+            except ValueError:
+                raise HTTPException(
+                    status_code=400, detail="Invalid value for Position"
+                )
