@@ -24,19 +24,11 @@ class ConfiguredDevice(BaseModel):
 def create_router(desc: Callable[[], Description] | Description, devices: List[Device]):
     router = APIRouter()
 
-    @router.get(
-        "/apiversions",
-        **common_endpoint_parameters,
-    )
     async def get_api_versions(
         req: Annotated[CommonRequest, Query()]
     ) -> Response[List[int]]:
         return Response[List[int]].from_request(req, [1])
 
-    @router.get(
-        "/v1/description",
-        **common_endpoint_parameters,
-    )
     async def get_description(
         req: Annotated[CommonRequest, Query()]
     ) -> Response[Description]:
@@ -45,10 +37,6 @@ def create_router(desc: Callable[[], Description] | Description, devices: List[D
             desc() if callable(desc) else desc,
         )
 
-    @router.get(
-        "/v1/configureddevices",
-        **common_endpoint_parameters,
-    )
     async def get_configureddevices(
         req: Annotated[CommonRequest, Query()]
     ) -> Response[List[ConfiguredDevice]]:
@@ -64,5 +52,20 @@ def create_router(desc: Callable[[], Description] | Description, devices: List[D
                 for d in devices
             ],
         )
+
+    router.get(
+        "/apiversions",
+        **common_endpoint_parameters,
+    )(get_api_versions)
+
+    router.get(
+        "/v1/description",
+        **common_endpoint_parameters,
+    )(get_description)
+
+    router.get(
+        "/v1/configureddevices",
+        **common_endpoint_parameters,
+    )(get_configureddevices)
 
     return router

@@ -20,10 +20,6 @@ class Action(BaseModel):
 def create_router(devices: List[Device]):
     router = APIRouter()
 
-    @router.get(
-        "/safetymonitor/{device_number}/issafe",
-        **common_endpoint_parameters,
-    )
     async def get_issafe(
         req: Annotated[CommonRequest, Query()],
         device: Device = Depends(device_finder(devices, UrlDeviceType.SafetyMonitor)),
@@ -36,5 +32,10 @@ def create_router(devices: List[Device]):
             )
         else:
             raise HTTPException(status_code=404)
+
+    router.get(
+        "/safetymonitor/{device_number}/issafe",
+        **common_endpoint_parameters,
+    )(get_issafe)
 
     return router

@@ -14,10 +14,6 @@ logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
 def create_router(devices: List[Device]):
     router = APIRouter()
 
-    @router.put(
-        "/{device_type}/{device_number}/action",
-        **common_endpoint_parameters,
-    )
     async def put_action(
         req: Annotated[ActionRequest, Form()],
         device: Device = Depends(common_device_finder(devices)),
@@ -25,11 +21,6 @@ def create_router(devices: List[Device]):
 
         raise NotImplementedError(req)
 
-    @router.get(
-        "/{device_type}/{device_number}/connected",
-        **common_endpoint_parameters,
-        response_model=Response[bool],
-    )
     async def get_connected(
         req: Annotated[CommonRequest, Query()],
         device: Device = Depends(common_device_finder(devices)),
@@ -40,10 +31,6 @@ def create_router(devices: List[Device]):
             device.get_connected(req),
         )
 
-    @router.put(
-        "/{device_type}/{device_number}/connected",
-        **common_endpoint_parameters,
-    )
     async def put_connected(
         req: Annotated[PutConnectedRequest, Form()],
         device: Device = Depends(common_device_finder(devices)),
@@ -55,10 +42,6 @@ def create_router(devices: List[Device]):
             None,
         )
 
-    @router.get(
-        "/{device_type}/{device_number}/description",
-        **common_endpoint_parameters,
-    )
     async def get_description(
         req: Annotated[CommonRequest, Query()],
         device: Device = Depends(common_device_finder(devices)),
@@ -69,10 +52,6 @@ def create_router(devices: List[Device]):
             device.get_description(req),
         )
 
-    @router.get(
-        "/{device_type}/{device_number}/driverinfo",
-        **common_endpoint_parameters,
-    )
     async def get_driverinfo(
         req: Annotated[CommonRequest, Query()],
         device: Device = Depends(common_device_finder(devices)),
@@ -83,10 +62,6 @@ def create_router(devices: List[Device]):
             device.get_driverinfo(req),
         )
 
-    @router.get(
-        "/{device_type}/{device_number}/driverversion",
-        **common_endpoint_parameters,
-    )
     async def get_driverversion(
         req: Annotated[CommonRequest, Query()],
         device: Device = Depends(common_device_finder(devices)),
@@ -97,10 +72,6 @@ def create_router(devices: List[Device]):
             device.get_driverversion(req),
         )
 
-    @router.get(
-        "/{device_type}/{device_number}/interfaceversion",
-        **common_endpoint_parameters,
-    )
     async def get_interfaceversion(
         req: Annotated[CommonRequest, Query()],
         device: Device = Depends(common_device_finder(devices)),
@@ -111,10 +82,6 @@ def create_router(devices: List[Device]):
             device.get_interfaceversion(req),
         )
 
-    @router.get(
-        "/{device_type}/{device_number}/name",
-        **common_endpoint_parameters,
-    )
     async def get_name(
         req: Annotated[CommonRequest, Query()],
         device: Device = Depends(common_device_finder(devices)),
@@ -125,10 +92,6 @@ def create_router(devices: List[Device]):
             device.get_name(req),
         )
 
-    @router.get(
-        "/{device_type}/{device_number}/supportedactions",
-        **common_endpoint_parameters,
-    )
     async def get_supportedactions(
         req: Annotated[CommonRequest, Query()],
         device: Device = Depends(common_device_finder(devices)),
@@ -138,5 +101,51 @@ def create_router(devices: List[Device]):
             req,
             device.get_supportedactions(req),
         )
+
+    router.put(
+        "/{device_type}/{device_number}/action",
+        **common_endpoint_parameters,
+    )(put_action)
+
+    router.get(
+        "/{device_type}/{device_number}/connected",
+        **common_endpoint_parameters,
+        response_model=Response[bool],
+    )(get_connected)
+
+    router.put(
+        "/{device_type}/{device_number}/connected",
+        **common_endpoint_parameters,
+    )(put_connected)
+
+    router.get(
+        "/{device_type}/{device_number}/description",
+        **common_endpoint_parameters,
+    )(get_description)
+
+    router.get(
+        "/{device_type}/{device_number}/driverinfo",
+        **common_endpoint_parameters,
+    )(get_driverinfo)
+
+    router.get(
+        "/{device_type}/{device_number}/driverversion",
+        **common_endpoint_parameters,
+    )(get_driverversion)
+
+    router.get(
+        "/{device_type}/{device_number}/interfaceversion",
+        **common_endpoint_parameters,
+    )(get_interfaceversion)
+
+    router.get(
+        "/{device_type}/{device_number}/name",
+        **common_endpoint_parameters,
+    )(get_name)
+
+    router.get(
+        "/{device_type}/{device_number}/supportedactions",
+        **common_endpoint_parameters,
+    )(get_supportedactions)
 
     return router
