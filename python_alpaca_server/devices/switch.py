@@ -15,7 +15,7 @@ class Switch(Device):
         super().__init__(DeviceType.Switch, unique_id)
 
     @abstractmethod
-    def get_maxswitch(self, req: CommonRequest) -> bool:
+    def get_maxswitch(self, req: CommonRequest) -> int:
         raise NotImplementedError(req)
 
     @abstractmethod
