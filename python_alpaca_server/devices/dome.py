@@ -78,7 +78,7 @@ class Dome(Device):
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_slaved(self, req: PutSlavedRequest) -> bool:
+    def put_slaved(self, req: PutSlavedRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
@@ -86,37 +86,37 @@ class Dome(Device):
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_abortslew(self, req: CommonRequest) -> bool:
+    def put_abortslew(self, req: CommonRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_closeshutter(self, req: CommonRequest) -> bool:
+    def put_closeshutter(self, req: CommonRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_findhome(self, req: CommonRequest) -> bool:
+    def put_findhome(self, req: CommonRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_openshutter(self, req: CommonRequest) -> bool:
+    def put_openshutter(self, req: CommonRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_park(self, req: CommonRequest) -> bool:
+    def put_park(self, req: CommonRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_setpark(self, req: CommonRequest) -> bool:
+    def put_setpark(self, req: CommonRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_slewtoaltitude(self, req: PutAltitudeRequest) -> bool:
+    def put_slewtoaltitude(self, req: PutAltitudeRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_slewtoazimuth(self, req: PutAzimuthRequest) -> bool:
+    def put_slewtoazimuth(self, req: PutAzimuthRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_synctoazimuth(self, req: PutAzimuthRequest) -> bool:
+    def put_synctoazimuth(self, req: PutAzimuthRequest) -> None:
         raise NotImplementedError(req)

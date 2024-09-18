@@ -28,7 +28,7 @@ class Rotator(Device):
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_reverse(self, req: PutReverseRequest) -> bool:
+    def put_reverse(self, req: PutReverseRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
@@ -40,21 +40,21 @@ class Rotator(Device):
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_halt(self, req: CommonRequest) -> bool:
+    def put_halt(self, req: CommonRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_move(self, req: PutPositionFloatRequest) -> bool:
+    def put_move(self, req: PutPositionFloatRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_moveabsolute(self, req: PutPositionFloatRequest) -> bool:
+    def put_moveabsolute(self, req: PutPositionFloatRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_movemechanical(self, req: PutPositionFloatRequest) -> bool:
+    def put_movemechanical(self, req: PutPositionFloatRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_sync(self, req: PutPositionFloatRequest) -> bool:
+    def put_sync(self, req: PutPositionFloatRequest) -> None:
         raise NotImplementedError(req)

@@ -24,5 +24,5 @@ class FilterWheel(Device):
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_position(self, req: PutPositionRequest) -> float:
+    def put_position(self, req: PutPositionRequest) -> None:
         raise NotImplementedError(req)

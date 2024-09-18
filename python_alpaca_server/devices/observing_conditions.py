@@ -12,7 +12,7 @@ class ObservingConditions(Device):
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_averageperiod(self, req: PutAveragePeriodRequest) -> bool:
+    def put_averageperiod(self, req: PutAveragePeriodRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
@@ -68,7 +68,7 @@ class ObservingConditions(Device):
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_refresh(self, req: CommonRequest) -> float:
+    def put_refresh(self, req: CommonRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod

@@ -43,21 +43,21 @@ class CoverCalibrator(Device):
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_calibratoroff(self, req: CommonRequest) -> str:
+    def put_calibratoroff(self, req: CommonRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_calibratoron(self, req: PutBrightnessRequest) -> str:
+    def put_calibratoron(self, req: PutBrightnessRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_closecover(self, req: CommonRequest) -> str:
+    def put_closecover(self, req: CommonRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_haltcover(self, req: CommonRequest) -> str:
+    def put_haltcover(self, req: CommonRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_opencover(self, req: CommonRequest) -> str:
+    def put_opencover(self, req: CommonRequest) -> None:
         raise NotImplementedError(req)

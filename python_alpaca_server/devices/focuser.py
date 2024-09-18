@@ -36,7 +36,7 @@ class Focuser(Device):
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_tempcomp(self, req: PutTempCompRequest) -> bool:
+    def put_tempcomp(self, req: PutTempCompRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
@@ -48,9 +48,9 @@ class Focuser(Device):
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_halt(self, req: CommonRequest) -> bool:
+    def put_halt(self, req: CommonRequest) -> None:
         raise NotImplementedError(req)
 
     @abstractmethod
-    def put_move(self, req: PutPositionRequest) -> bool:
+    def put_move(self, req: PutPositionRequest) -> None:
         raise NotImplementedError(req)
