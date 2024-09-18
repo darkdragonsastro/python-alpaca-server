@@ -108,7 +108,7 @@ class PutConnectedRequest(CommonRequest):
     )
 
 
-class PutBrightnessRequest(BaseModel):
+class PutBrightnessRequest(CommonRequest):
     Brightness: int
 
     _check_brightness = field_validator("Brightness", mode="before")(
