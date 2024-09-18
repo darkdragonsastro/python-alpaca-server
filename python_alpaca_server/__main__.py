@@ -1,7 +1,8 @@
-from typing import List
+from typing import List, override
 
 from .app import AlpacaServer
 from .device import SafetyMonitor
+from .request import CommonRequest, PutConnectedRequest
 
 
 class MySafetyMonitor(SafetyMonitor):
@@ -9,32 +10,44 @@ class MySafetyMonitor(SafetyMonitor):
         super().__init__(unique_id)
         self._connected = False
 
-    def get_connected(self) -> bool:
+    @override
+    def get_connected(self, req: CommonRequest) -> bool:
         return self._connected
 
-    def put_connected(self, connected: bool) -> None:
-        self._connected = connected
+    @override
+    def put_connected(self, req: PutConnectedRequest) -> None:
+        self._connected = req.Connected
 
-    def get_description(self) -> str:
+    @override
+    def get_description(self, req: CommonRequest) -> str:
         return "My Description"
 
-    def get_driverinfo(self) -> str:
+    @override
+    def get_driverinfo(self, req: CommonRequest) -> str:
         return "My Driver Info"
 
-    def get_driverversion(self) -> str:
+    @override
+    def get_driverversion(self, req: CommonRequest) -> str:
         return "0.1.0"
 
-    def get_interfaceversion(self) -> int:
+    @override
+    def get_interfaceversion(self, req: CommonRequest) -> int:
         return 1
 
-    def get_name(self) -> str:
+    @override
+    def get_name(self, req: CommonRequest) -> str:
         return "MySafetyMonitor"
 
-    def get_supportedactions(self) -> List[str]:
+    @override
+    def get_supportedactions(self, req: CommonRequest) -> List[str]:
         return []
 
-    def get_issafe(self) -> bool:
-        return True
+    @override
+    def get_issafe(self, req: CommonRequest) -> bool:
+        if not self._connected:
+            return False
+
+        return False
 
 
 if __name__ == "__main__":

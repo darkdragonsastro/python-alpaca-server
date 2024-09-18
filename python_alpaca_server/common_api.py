@@ -5,18 +5,10 @@ from fastapi import APIRouter, Depends, Form, Query
 
 from .device import Device, common_device_finder
 from .errors import NotImplementedError
-from .response import CommonRequest, Response, common_endpoint_parameters
+from .response import Response, common_endpoint_parameters
+from .request import CommonRequest, ActionRequest, PutConnectedRequest
 
 logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
-
-
-class ActionRequest(CommonRequest):
-    Action: str
-    Parameters: str
-
-
-class PutConnectedRequest(CommonRequest):
-    Connected: bool
 
 
 def create_router(devices: List[Device]):
@@ -45,7 +37,7 @@ def create_router(devices: List[Device]):
 
         return Response[bool].from_request(
             req,
-            device.get_connected(),
+            device.get_connected(req),
         )
 
     @router.put(
@@ -56,7 +48,7 @@ def create_router(devices: List[Device]):
         req: Annotated[PutConnectedRequest, Form()],
         device: Device = Depends(common_device_finder(devices)),
     ) -> Response[None]:
-        device.put_connected(req.Connected)
+        device.put_connected(req)
 
         return Response[None].from_request(
             req,
@@ -74,7 +66,7 @@ def create_router(devices: List[Device]):
 
         return Response[str].from_request(
             req,
-            device.get_description(),
+            device.get_description(req),
         )
 
     @router.get(
@@ -88,7 +80,7 @@ def create_router(devices: List[Device]):
 
         return Response[str].from_request(
             req,
-            Value=device.get_driverinfo(),
+            device.get_driverinfo(req),
         )
 
     @router.get(
@@ -102,7 +94,7 @@ def create_router(devices: List[Device]):
 
         return Response[str].from_request(
             req,
-            Value=device.get_driverversion(),
+            device.get_driverversion(req),
         )
 
     @router.get(
@@ -116,7 +108,7 @@ def create_router(devices: List[Device]):
 
         return Response[int].from_request(
             req,
-            Value=device.get_interfaceversion(),
+            device.get_interfaceversion(req),
         )
 
     @router.get(
@@ -130,7 +122,7 @@ def create_router(devices: List[Device]):
 
         return Response[str].from_request(
             req,
-            Value=device.get_name(),
+            device.get_name(req),
         )
 
     @router.get(
@@ -144,7 +136,7 @@ def create_router(devices: List[Device]):
 
         return Response[List[str]].from_request(
             req,
-            Value=device.get_supportedactions(),
+            device.get_supportedactions(req),
         )
 
     return router

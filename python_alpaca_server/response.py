@@ -1,14 +1,22 @@
-import threading
-from typing import Generic, Optional, TypeVar
+from typing import Generic, Optional, TypeVar, TypedDict, Dict, Any
 
 import structlog
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
+from .request import CommonRequest
+
 
 logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
 
 common_responses = {400: {"model": str}, 500: {"model": str}}
 
-common_endpoint_parameters = {
+
+class EndpointParameters(TypedDict):
+    responses: Dict[int, Dict[str, Any]]
+    response_model_exclude_unset: bool
+    response_model_exclude_none: bool
+
+
+common_endpoint_parameters: EndpointParameters = {
     "responses": common_responses,
     "response_model_exclude_unset": True,
     "response_model_exclude_none": True,
@@ -17,28 +25,10 @@ common_endpoint_parameters = {
 T = TypeVar("T")
 
 
-counter_lock = threading.Lock()
-counter = 0
-
-
-def _server_transaction_id() -> int:
-    global counter
-
-    with counter_lock:
-        counter += 1
-
-    return counter
-
-
-class CommonRequest(BaseModel):
-    ClientTransactionID: Optional[int] = None
-    ClientID: Optional[int] = None
-
-
 class Response(BaseModel, Generic[T]):
     Value: T
     ClientTransactionID: Optional[int] = None
-    ServerTransactionID: int = Field(default_factory=_server_transaction_id)
+    ServerTransactionID: Optional[int] = None
     ErrorNumber: Optional[int] = None
     ErrorMessage: Optional[str] = None
 
@@ -47,8 +37,7 @@ class Response(BaseModel, Generic[T]):
         r = Response(
             Value=value,
             ClientTransactionID=req.ClientTransactionID,
+            ServerTransactionID=req.ServerTransactionID,
         )
-
-        logger.info("converting response", r=r)
 
         return r

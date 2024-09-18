@@ -5,7 +5,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 
 from .device import Device, SafetyMonitor, UrlDeviceType, device_finder
-from .response import CommonRequest, Response, common_endpoint_parameters
+from .response import Response, common_endpoint_parameters
+from .request import CommonRequest
 
 logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
 
@@ -27,12 +28,10 @@ def create_router(devices: List[Device]):
         device: Device = Depends(device_finder(devices, UrlDeviceType.SafetyMonitor)),
     ) -> Response[bool]:
 
-        logger.info("test", req=req, device=device)
-
         if isinstance(device, SafetyMonitor):
             return Response[bool].from_request(
                 req,
-                device.get_issafe(),
+                device.get_issafe(req),
             )
         else:
             raise HTTPException(status_code=404)

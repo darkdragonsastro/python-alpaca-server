@@ -6,6 +6,7 @@ import structlog
 from fastapi import HTTPException, Path
 
 from .errors import NotImplementedError
+from .request import CommonRequest, ActionRequest, PutConnectedRequest, CommandRequest
 
 logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
 
@@ -42,49 +43,49 @@ class Device(ABC):
         self.unique_id = unique_id
         self.device_number: int = -1
 
-    def put_action(self, action: str, parameters: str) -> str:
-        raise NotImplementedError()
+    def put_action(self, req: ActionRequest) -> str:
+        raise NotImplementedError(req)
 
-    def put_command_blind(self, command: str, raw: str) -> None:
-        raise NotImplementedError()
+    def put_command_blind(self, req: CommandRequest) -> None:
+        raise NotImplementedError(req)
 
-    def put_command_bool(self, command: str, raw: str) -> bool:
-        raise NotImplementedError()
+    def put_command_bool(self, req: CommandRequest) -> bool:
+        raise NotImplementedError(req)
 
-    def put_command_string(self, command: str, raw: str) -> str:
-        raise NotImplementedError()
-
-    @abstractmethod
-    def get_connected(self) -> bool:
-        raise NotImplementedError()
+    def put_command_string(self, req: CommandRequest) -> str:
+        raise NotImplementedError(req)
 
     @abstractmethod
-    def put_connected(self, connected: bool) -> None:
-        raise NotImplementedError()
+    def get_connected(self, req: CommonRequest) -> bool:
+        raise NotImplementedError(req)
 
     @abstractmethod
-    def get_description(self) -> str:
-        raise NotImplementedError()
+    def put_connected(self, req: PutConnectedRequest) -> None:
+        raise NotImplementedError(req)
 
     @abstractmethod
-    def get_driverinfo(self) -> str:
-        raise NotImplementedError()
+    def get_description(self, req: CommonRequest) -> str:
+        raise NotImplementedError(req)
 
     @abstractmethod
-    def get_driverversion(self) -> str:
-        raise NotImplementedError()
+    def get_driverinfo(self, req: CommonRequest) -> str:
+        raise NotImplementedError(req)
 
     @abstractmethod
-    def get_interfaceversion(self) -> int:
-        raise NotImplementedError()
+    def get_driverversion(self, req: CommonRequest) -> str:
+        raise NotImplementedError(req)
 
     @abstractmethod
-    def get_name(self) -> str:
-        raise NotImplementedError()
+    def get_interfaceversion(self, req: CommonRequest) -> int:
+        raise NotImplementedError(req)
 
     @abstractmethod
-    def get_supportedactions(self) -> List[str]:
-        raise NotImplementedError()
+    def get_name(self, req: CommonRequest) -> str:
+        raise NotImplementedError(req)
+
+    @abstractmethod
+    def get_supportedactions(self, req: CommonRequest) -> List[str]:
+        raise NotImplementedError(req)
 
 
 class SafetyMonitor(Device):
@@ -92,8 +93,8 @@ class SafetyMonitor(Device):
         super().__init__(DeviceType.SafetyMonitor, unique_id)
 
     @abstractmethod
-    def get_issafe() -> bool:
-        raise NotImplementedError()
+    def get_issafe(self, req: CommonRequest) -> bool:
+        raise NotImplementedError(req)
 
 
 def test(device_type: Annotated[str, Path()]):

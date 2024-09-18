@@ -61,7 +61,7 @@ def create_router(devices: List[Device]):
             req,
             [
                 ConfiguredDevice(
-                    DeviceName=d.get_name(),
+                    DeviceName=d.get_name(req),
                     DeviceType=d.device_type,
                     DeviceNumber=d.device_number,
                     UniqueID=d.unique_id,

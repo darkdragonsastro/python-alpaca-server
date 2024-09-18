@@ -1,4 +1,4 @@
-from .response import CommonRequest
+from .request import CommonRequest
 
 
 class AlpacaError(Exception):
