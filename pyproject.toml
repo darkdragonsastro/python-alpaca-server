@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "python-alpaca-server"
+version = "0.1.0"
+description = "An http ASCOM Alpaca server written in python."
+authors = ["Rick Bassham <brodrick.bassham@gmail.com>"]
+license = "Apache-2.0"
+readme = "README.md"
+packages = [{ include = "python_alpaca_server" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = { version = "^0.115.0", extras = ["standard"] }
+structlog = "^24.4.0"
+asyncudp = "^0.11.0"
+watchfiles = "^0.24.0"
+fastapi-utils = "^0.7.0"
+python-multipart = "^0.0.9"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.8.0"
+isort = "^5.13.2"
+mypy = "^1.11.2"
+flake8 = "^7.1.1"
+flake8-pyproject = "^1.2.3"
+
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "$version"
+version_scheme = "semver"
+version_provider = "poetry"
+update_changelog_on_bump = true
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.flake8]
+max-line-length = 120
