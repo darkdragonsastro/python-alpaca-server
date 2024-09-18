@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "python-alpaca-server"
-version = "0.2.0"
+version = "0.2.1"
 description = "An http ASCOM Alpaca server written in python."
 authors = ["Rick Bassham <brodrick.bassham@gmail.com>"]
 license = "Apache-2.0"
