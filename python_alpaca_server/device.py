@@ -97,10 +97,6 @@ class SafetyMonitor(Device):
         raise NotImplementedError(req)
 
 
-def test(device_type: Annotated[str, Path()]):
-    logger.info("find device")
-
-
 def device_finder(devices: List[Device], device_type: UrlDeviceType):
     def find_device(
         device_number: Annotated[int, Path()],
