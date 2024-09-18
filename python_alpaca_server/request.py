@@ -1,5 +1,5 @@
 import threading
-from typing import Optional
+from typing import Optional, Any
 from pydantic import BaseModel, Field, model_validator, field_validator
 import structlog
 from fastapi import HTTPException
@@ -19,6 +19,47 @@ def _server_transaction_id() -> int:
     return counter
 
 
+def _lenient_int_validator(value: Any) -> int:
+    if value is not None:
+        try:
+            return int(value)
+        except ValueError:
+            return 0
+
+
+def _strict_int_validator(value: Any) -> int:
+    if value is not None:
+        try:
+            return int(value)
+        except ValueError:
+            raise HTTPException(status_code=400, detail="invalid integer value")
+
+
+def _strict_bool_validator(value):
+    if value is not None:
+        if isinstance(value, str):
+            if value.lower() in ["true", "1"]:
+                return True
+            elif value.lower() in ["false", "0"]:
+                return False
+        elif isinstance(value, int):
+            if value == 1:
+                return True
+            elif value == 0:
+                return False
+        elif isinstance(value, bool):
+            return value
+    raise HTTPException(status_code=400, detail="invalid boolean value")
+
+
+def _strict_float_validator(value):
+    if value is not None:
+        try:
+            return float(value)
+        except ValueError:
+            raise HTTPException(status_code=400, detail="invalid float value")
+
+
 class CommonRequest(BaseModel):
     ClientTransactionID: Optional[int] = None
     ClientID: Optional[int] = None
@@ -36,14 +77,9 @@ class CommonRequest(BaseModel):
 
         return values
 
-    @field_validator("ClientTransactionID", "ClientID", mode="before")
-    @classmethod
-    def check_int_not_required(cls, value):
-        if value is not None:
-            try:
-                return int(value)
-            except ValueError:
-                return 0
+    _check_ids = field_validator("ClientTransactionID", "ClientID", mode="before")(
+        _lenient_int_validator
+    )
 
 
 class ActionRequest(CommonRequest):
@@ -59,148 +95,65 @@ class CommandRequest(CommonRequest):
 class PutConnectedRequest(CommonRequest):
     Connected: bool
 
-    @field_validator("Connected", mode="before")
-    @classmethod
-    def check_bool(cls, value):
-        if value is not None:
-            if isinstance(value, str):
-                if value.lower() in ["true", "1"]:
-                    return True
-                elif value.lower() in ["false", "0"]:
-                    return False
-            elif isinstance(value, int):
-                if value == 1:
-                    return True
-                elif value == 0:
-                    return False
-            elif isinstance(value, bool):
-                return value
-        raise HTTPException(status_code=400, detail="Invalid value for Connected")
+    _check_connected = field_validator("Connected", mode="before")(
+        _strict_bool_validator
+    )
 
 
 class PutBrightnessRequest(BaseModel):
     Brightness: int
 
-    @field_validator("Brightness", mode="before")
-    @classmethod
-    def check_int(cls, value):
-        if value is not None:
-            try:
-                return int(value)
-            except ValueError:
-                raise HTTPException(
-                    status_code=400, detail="Invalid value for Brightness"
-                )
+    _check_brightness = field_validator("Brightness", mode="before")(
+        _strict_int_validator
+    )
 
 
 class PutSlavedRequest(CommonRequest):
     Slaved: bool
 
-    @field_validator("Slaved", mode="before")
-    @classmethod
-    def check_bool(cls, value):
-        if value is not None:
-            if isinstance(value, str):
-                if value.lower() in ["true", "1"]:
-                    return True
-                elif value.lower() in ["false", "0"]:
-                    return False
-            elif isinstance(value, int):
-                if value == 1:
-                    return True
-                elif value == 0:
-                    return False
-            elif isinstance(value, bool):
-                return value
-        raise HTTPException(status_code=400, detail="Invalid value for Slaved")
+    _check_slaved = field_validator("Slaved", mode="before")(_strict_bool_validator)
 
 
 class PutAltitudeRequest(CommonRequest):
     Altitude: float
 
-    @field_validator("Altitude", mode="before")
-    @classmethod
-    def check_float(cls, value):
-        if value is not None:
-            try:
-                return float(value)
-            except ValueError:
-                raise HTTPException(
-                    status_code=400, detail="Invalid value for Altitude"
-                )
+    _check_altitude = field_validator("Altitude", mode="before")(
+        _strict_float_validator
+    )
 
 
 class PutAzimuthRequest(CommonRequest):
     Azimuth: float
 
-    @field_validator("Azimuth", mode="before")
-    @classmethod
-    def check_float(cls, value):
-        if value is not None:
-            try:
-                return float(value)
-            except ValueError:
-                raise HTTPException(status_code=400, detail="Invalid value for Azimuth")
+    _check_azimuth = field_validator("Azimuth", mode="before")(_strict_float_validator)
 
 
 class PutPositionRequest(CommonRequest):
     Position: int
 
-    @field_validator("Position", mode="before")
-    @classmethod
-    def check_int(cls, value):
-        if value is not None:
-            try:
-                return int(value)
-            except ValueError:
-                raise HTTPException(
-                    status_code=400, detail="Invalid value for Position"
-                )
+    _check_position = field_validator("Position", mode="before")(_strict_int_validator)
 
 
 class PutPositionFloatRequest(CommonRequest):
     Position: float
 
-    @field_validator("Position", mode="before")
-    @classmethod
-    def check_int(cls, value):
-        if value is not None:
-            try:
-                return float(value)
-            except ValueError:
-                raise HTTPException(
-                    status_code=400, detail="Invalid value for Position"
-                )
+    _check_position = field_validator("Position", mode="before")(
+        _strict_float_validator
+    )
 
 
 class PutTempCompRequest(CommonRequest):
     TempComp: int
 
-    @field_validator("TempComp", mode="before")
-    @classmethod
-    def check_int(cls, value):
-        if value is not None:
-            try:
-                return int(value)
-            except ValueError:
-                raise HTTPException(
-                    status_code=400, detail="Invalid value for TempComp"
-                )
+    _check_tempcomp = field_validator("TempComp", mode="before")(_strict_int_validator)
 
 
 class PutAveragePeriodRequest(CommonRequest):
     AveragePeriod: float
 
-    @field_validator("AveragePeriod", mode="before")
-    @classmethod
-    def check_float(cls, value):
-        if value is not None:
-            try:
-                return float(value)
-            except ValueError:
-                raise HTTPException(
-                    status_code=400, detail="Invalid value for AveragePeriod"
-                )
+    _check_average_period = field_validator("AveragePeriod", mode="before")(
+        _strict_float_validator
+    )
 
 
 class SensorNameRequest(CommonRequest):
@@ -210,102 +163,33 @@ class SensorNameRequest(CommonRequest):
 class PutReverseRequest(CommonRequest):
     Reverse: bool
 
-    @field_validator("Reverse", mode="before")
-    @classmethod
-    def check_bool(cls, value):
-        if value is not None:
-            if isinstance(value, str):
-                if value.lower() in ["true", "1"]:
-                    return True
-                elif value.lower() in ["false", "0"]:
-                    return False
-            elif isinstance(value, int):
-                if value == 1:
-                    return True
-                elif value == 0:
-                    return False
-            elif isinstance(value, bool):
-                return value
-        raise HTTPException(status_code=400, detail="Invalid value for Reverse")
+    _check_reverse = field_validator("Reverse", mode="before")(_strict_bool_validator)
 
 
 class IdRequest(CommonRequest):
     Id: int
 
-    @field_validator("Id", mode="before")
-    @classmethod
-    def check_int(cls, value):
-        if value is not None:
-            try:
-                return int(value)
-            except ValueError:
-                raise HTTPException(status_code=400, detail="Invalid value for Id")
+    _check_id = field_validator("Id", mode="before")(_strict_int_validator)
 
 
 class PutIdValueRequest(CommonRequest):
     Id: int
     Value: float
 
-    @field_validator("Id", mode="before")
-    @classmethod
-    def check_int(cls, value):
-        if value is not None:
-            try:
-                return int(value)
-            except ValueError:
-                raise HTTPException(status_code=400, detail="Invalid value for Id")
-
-    @field_validator("Value", mode="before")
-    @classmethod
-    def check_float(cls, value):
-        if value is not None:
-            try:
-                return float(value)
-            except ValueError:
-                raise HTTPException(status_code=400, detail="Invalid value for Value")
+    _check_id = field_validator("Id", mode="before")(_strict_int_validator)
+    _check_value = field_validator("Value", mode="before")(_strict_float_validator)
 
 
 class PutIdNameRequest(CommonRequest):
     Id: int
     Name: str
 
-    @field_validator("Id", mode="before")
-    @classmethod
-    def check_int(cls, value):
-        if value is not None:
-            try:
-                return int(value)
-            except ValueError:
-                raise HTTPException(status_code=400, detail="Invalid value for Id")
+    _check_id = field_validator("Id", mode="before")(_strict_int_validator)
 
 
 class PutIdStateRequest(CommonRequest):
     Id: int
     State: bool
 
-    @field_validator("Id", mode="before")
-    @classmethod
-    def check_int(cls, value):
-        if value is not None:
-            try:
-                return int(value)
-            except ValueError:
-                raise HTTPException(status_code=400, detail="Invalid value for Id")
-
-    @field_validator("State", mode="before")
-    @classmethod
-    def check_bool(cls, value):
-        if value is not None:
-            if isinstance(value, str):
-                if value.lower() in ["true", "1"]:
-                    return True
-                elif value.lower() in ["false", "0"]:
-                    return False
-            elif isinstance(value, int):
-                if value == 1:
-                    return True
-                elif value == 0:
-                    return False
-            elif isinstance(value, bool):
-                return value
-        raise HTTPException(status_code=400, detail="Invalid value for State")
+    _check_id = field_validator("Id", mode="before")(_strict_int_validator)
+    _check_state = field_validator("State", mode="before")(_strict_bool_validator)
