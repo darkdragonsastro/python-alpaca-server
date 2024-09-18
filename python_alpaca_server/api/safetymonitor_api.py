@@ -4,7 +4,7 @@ import structlog
 from fastapi import APIRouter, Depends, Query
 
 from ..device import Device, UrlDeviceType, device_finder
-from ..devices.safety_monitor import SafetyMonitor
+from ..devices.safetymonitor import SafetyMonitor
 from ..request import CommonRequest
 from ..response import Response, common_endpoint_parameters
 

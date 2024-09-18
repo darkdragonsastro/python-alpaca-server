@@ -1,7 +1,7 @@
 from typing import List, override
 
 from .app import AlpacaServer, Description
-from .devices.safety_monitor import SafetyMonitor
+from .devices.safetymonitor import SafetyMonitor
 from .request import ActionRequest, CommandRequest, CommonRequest, PutConnectedRequest
 
 

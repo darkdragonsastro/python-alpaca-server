@@ -4,7 +4,7 @@ import structlog
 from fastapi import APIRouter, Depends, Query
 
 from ..device import Device, UrlDeviceType, device_finder
-from ..devices.cover_calibrator import CalibratorState, CoverCalibrator, CoverState
+from ..devices.covercalibrator import CalibratorState, CoverCalibrator, CoverState
 from ..request import CommonRequest, PutBrightnessRequest
 from ..response import Response, common_endpoint_parameters
 
