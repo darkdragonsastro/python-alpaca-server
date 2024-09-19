@@ -1,3 +1,9 @@
+## 1.0.2 (2024-09-19)
+
+### Fix
+
+- relax python requirements down to 3.8
+
 ## 1.0.1 (2024-09-18)
 
 ### Fix
