@@ -12,13 +12,19 @@ as well.
 
 ## Example
 
+```bash
+pip install python-alpaca-server
+```
+
+### Edit `app.py`
+
 ```python
 from typing import List
 
-from .app import AlpacaServer, Description
-from .devices.safetymonitor import SafetyMonitor
-from .errors import NotImplementedError
-from .request import ActionRequest, CommandRequest, CommonRequest, PutConnectedRequest
+from python_alpaca_server.app import AlpacaServer, Description
+from python_alpaca_server.devices.safetymonitor import SafetyMonitor
+from python_alpaca_server.errors import NotImplementedError
+from python_alpaca_server.request import ActionRequest, CommandRequest, CommonRequest, PutConnectedRequest
 
 # Inherit from the base SafetyMonitor class, and implement the methods.
 class MySafetyMonitor(SafetyMonitor):
@@ -95,4 +101,10 @@ if __name__ == "__main__":
         uvicorn.run(app, host="0.0.0.0", port=port)
     except KeyboardInterrupt:
         pass
+```
+
+### Run
+
+```bash
+python app.py
 ```
