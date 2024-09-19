@@ -13,7 +13,7 @@ as well.
 ## Example
 
 ```python
-from typing import List, override
+from typing import List
 
 from .app import AlpacaServer, Description
 from .devices.safetymonitor import SafetyMonitor
@@ -26,55 +26,42 @@ class MySafetyMonitor(SafetyMonitor):
         super().__init__(unique_id)
         self._connected = False
 
-    @override
     def put_action(self, req: ActionRequest) -> str:
         raise NotImplementedError(req)
 
-    @override
     def put_command_blind(self, req: CommandRequest) -> None:
         raise NotImplementedError(req)
 
-    @override
     def put_command_bool(self, req: CommandRequest) -> bool:
         raise NotImplementedError(req)
 
-    @override
     def put_command_string(self, req: CommandRequest) -> str:
         raise NotImplementedError(req)
 
-    @override
     def get_connected(self, req: CommonRequest) -> bool:
         return self._connected
 
-    @override
     def put_connected(self, req: PutConnectedRequest) -> None:
         self._connected = req.Connected
 
-    @override
     def get_description(self, req: CommonRequest) -> str:
         return "My Description"
 
-    @override
     def get_driverinfo(self, req: CommonRequest) -> str:
         return "My Driver Info"
 
-    @override
     def get_driverversion(self, req: CommonRequest) -> str:
         return "0.1.0"
 
-    @override
     def get_interfaceversion(self, req: CommonRequest) -> int:
         return 1
 
-    @override
     def get_name(self, req: CommonRequest) -> str:
         return "MySafetyMonitor"
 
-    @override
     def get_supportedactions(self, req: CommonRequest) -> List[str]:
         return []
 
-    @override
     def get_issafe(self, req: CommonRequest) -> bool:
         if not self._connected:
             return False

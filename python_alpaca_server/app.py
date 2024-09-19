@@ -1,6 +1,6 @@
 import asyncio
 from contextlib import asynccontextmanager
-from typing import Callable, Dict, List
+from typing import Callable, Dict, List, Union
 
 import structlog
 from fastapi import FastAPI
@@ -32,7 +32,7 @@ def _start_discovery_server(http_port: int):
 class AlpacaServer:
     def __init__(
         self,
-        server_description: Callable[[], Description] | Description,
+        server_description: Union[Callable[[], Description], Description],
         devices: List[Device],
     ):
         number_by_type: Dict[DeviceType, int] = {}

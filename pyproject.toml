@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{ include = "python_alpaca_server" }]
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = ">=3.8.1,<4"
 fastapi = { version = "^0.115.0", extras = ["standard"] }
 structlog = "^24.4.0"
 asyncudp = "^0.11.0"

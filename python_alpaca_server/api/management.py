@@ -1,4 +1,10 @@
-from typing import Annotated, Callable, List
+import sys
+from typing import Callable, List, Union
+
+if sys.version_info >= (3, 9):
+    from typing import Annotated
+else:
+    from typing_extensions import Annotated
 
 from fastapi import APIRouter, Query
 from pydantic import BaseModel
@@ -21,7 +27,9 @@ class ConfiguredDevice(BaseModel):
     UniqueID: str
 
 
-def create_router(desc: Callable[[], Description] | Description, devices: List[Device]):
+def create_router(
+    desc: Union[Callable[[], Description], Description], devices: List[Device]
+):
     router = APIRouter()
 
     async def get_api_versions(

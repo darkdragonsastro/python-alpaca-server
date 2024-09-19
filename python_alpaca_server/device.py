@@ -1,6 +1,12 @@
+import sys
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import Annotated, List, Optional
+from typing import List, Optional
+
+if sys.version_info >= (3, 9):
+    from typing import Annotated
+else:
+    from typing_extensions import Annotated
 
 import structlog
 from fastapi import HTTPException, Path
