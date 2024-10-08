@@ -13,9 +13,7 @@ class DiscoveryServer:
         self.http_port = http_port
 
     async def start(self):
-        self.socket = await asyncudp.create_socket(
-            local_addr=("0.0.0.0", 32227), reuse_port=True
-        )
+        self.socket = await asyncudp.create_socket(local_addr=("0.0.0.0", 32227))
 
         while True:
             data, addr = await self.socket.recvfrom()
