@@ -1,3 +1,13 @@
+## 1.1.0 (2026-01-08)
+
+### Feat
+
+- add standardized Makefile targets and unit tests
+
+### Fix
+
+- register all device-type routers conditionally (#4)
+
 ## 1.0.4 (2024-10-07)
 
 ### Fix
