@@ -1,38 +1,38 @@
 [tool.poetry]
-name = "python-alpaca-server"
-version = "1.0.4"
+authors = ["Rick Bassham <rick@darkdragonsastro.com>"]
 description = "An http ASCOM Alpaca server written in python."
-authors = ["Rick Bassham <brodrick.bassham@gmail.com>"]
 license = "Apache-2.0"
+name = "python-alpaca-server"
+packages = [{include = "python_alpaca_server"}]
 readme = "README.md"
-packages = [{ include = "python_alpaca_server" }]
+version = "1.0.4"
 
 [tool.poetry.dependencies]
-python = ">=3.8.1,<4"
-fastapi = { version = "^0.115.0", extras = ["standard"] }
-structlog = "^24.4.0"
 asyncudp = "^0.11.0"
-watchfiles = "^0.24.0"
+fastapi = {version = "^0.115.0", extras = ["standard"]}
 fastapi-utils = "^0.7.0"
+python = ">=3.8.1,<4"
 python-multipart = "^0.0.9"
+structlog = "^24.4.0"
+watchfiles = "^0.24.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.8.0"
-isort = "^5.13.2"
-mypy = "^1.11.2"
 flake8 = "^7.1.1"
 flake8-pyproject = "^1.2.3"
-
+isort = "^5.13.2"
+mypy = "^1.11.2"
+pytest = "^7.4"
 
 [tool.commitizen]
 name = "cz_conventional_commits"
 tag_format = "$version"
-version_scheme = "semver"
-version_provider = "poetry"
 update_changelog_on_bump = true
+version_provider = "poetry"
+version_scheme = "semver"
 [build-system]
-requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
 
 [tool.flake8]
 max-line-length = 120
