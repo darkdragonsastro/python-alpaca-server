@@ -108,3 +108,10 @@ if __name__ == "__main__":
 ```bash
 python app.py
 ```
+
+## ASCOM Alpaca Reference
+
+- [ASCOM Master Interface Documentation](https://ascom-standards.org/newdocs/) - Official API specifications for all device types
+- Local OpenAPI specs in `docs/`:
+  - `AlpacaDeviceAPI_v1.yaml` - Device API (camera, telescope, focuser, etc.)
+  - `AlpacaManagementAPI_v1.yaml` - Management API (discovery, configuration)
