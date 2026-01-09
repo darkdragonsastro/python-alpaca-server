@@ -40,6 +40,14 @@ class CoverCalibrator(Device):
         raise NotImplementedError(req)
 
     @abstractmethod
+    def get_calibratorchanging(self, req: CommonRequest) -> bool:
+        raise NotImplementedError(req)
+
+    @abstractmethod
+    def get_covermoving(self, req: CommonRequest) -> bool:
+        raise NotImplementedError(req)
+
+    @abstractmethod
     def get_maxbrightness(self, req: CommonRequest) -> int:
         raise NotImplementedError(req)
 
