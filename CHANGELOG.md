@@ -1,3 +1,9 @@
+## 1.2.0 (2026-01-09)
+
+### Feat
+
+- add switchstep property to Switch device (#7)
+
 ## 1.1.0 (2026-01-08)
 
 ### Feat
