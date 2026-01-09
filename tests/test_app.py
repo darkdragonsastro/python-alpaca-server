@@ -398,3 +398,82 @@ class TestRouterRegistrationWithTestClient:
         data = response.json()
         assert "Value" in data
         assert data["Value"] is True
+
+
+class TestCommandEndpoints:
+    """Tests for the command* endpoints (commandblind, commandbool, commandstring)."""
+
+    def test_commandblind_endpoint_accessible(self):
+        """commandblind endpoint is accessible via HTTP when device is present."""
+        server = AlpacaServer(_server_description(), [MockSafetyMonitor()])
+        app = server.create_app(5555)
+        client = TestClient(app, raise_server_exceptions=False)
+
+        response = client.put(
+            "/api/v1/safetymonitor/0/commandblind",
+            data={"Command": "test", "Raw": "false"},
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+        # ErrorNumber is excluded from response when None (no error)
+        assert "ErrorNumber" not in data or data["ErrorNumber"] == 0
+
+    def test_commandbool_endpoint_accessible(self):
+        """commandbool endpoint is accessible via HTTP when device is present."""
+        server = AlpacaServer(_server_description(), [MockSafetyMonitor()])
+        app = server.create_app(5555)
+        client = TestClient(app, raise_server_exceptions=False)
+
+        response = client.put(
+            "/api/v1/safetymonitor/0/commandbool",
+            data={"Command": "test", "Raw": "false"},
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+        assert "Value" in data
+        assert data["Value"] is False
+
+    def test_commandstring_endpoint_accessible(self):
+        """commandstring endpoint is accessible via HTTP when device is present."""
+        server = AlpacaServer(_server_description(), [MockSafetyMonitor()])
+        app = server.create_app(5555)
+        client = TestClient(app, raise_server_exceptions=False)
+
+        response = client.put(
+            "/api/v1/safetymonitor/0/commandstring",
+            data={"Command": "test", "Raw": "false"},
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+        assert "Value" in data
+        assert data["Value"] == ""
+
+    def test_command_endpoints_work_with_common_router(self):
+        """Command endpoints work via the common router for any device type."""
+        server = AlpacaServer(_server_description(), [MockFocuser()])
+        app = server.create_app(5555)
+        client = TestClient(app, raise_server_exceptions=False)
+
+        # Test commandblind via focuser device
+        response = client.put(
+            "/api/v1/focuser/0/commandblind",
+            data={"Command": "test", "Raw": "false"},
+        )
+        assert response.status_code == 200
+
+        # Test commandbool via focuser device
+        response = client.put(
+            "/api/v1/focuser/0/commandbool",
+            data={"Command": "test", "Raw": "false"},
+        )
+        assert response.status_code == 200
+
+        # Test commandstring via focuser device
+        response = client.put(
+            "/api/v1/focuser/0/commandstring",
+            data={"Command": "test", "Raw": "false"},
+        )
+        assert response.status_code == 200

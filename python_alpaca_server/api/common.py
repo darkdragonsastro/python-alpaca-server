@@ -11,7 +11,7 @@ from fastapi import APIRouter, Depends, Form, Query
 
 from ..device import Device, common_device_finder
 from ..errors import NotImplementedError
-from ..request import ActionRequest, CommonRequest, PutConnectedRequest
+from ..request import ActionRequest, CommandRequest, CommonRequest, PutConnectedRequest
 from ..response import Response, common_endpoint_parameters
 
 logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
@@ -108,6 +108,37 @@ def create_router(devices: List[Device]):
             device.get_supportedactions(req),
         )
 
+    async def put_command_blind(
+        req: Annotated[CommandRequest, Form()],
+        device: Device = Depends(common_device_finder(devices)),
+    ) -> Response[None]:
+        device.put_command_blind(req)
+
+        return Response[None].from_request(
+            req,
+            None,
+        )
+
+    async def put_command_bool(
+        req: Annotated[CommandRequest, Form()],
+        device: Device = Depends(common_device_finder(devices)),
+    ) -> Response[bool]:
+
+        return Response[bool].from_request(
+            req,
+            device.put_command_bool(req),
+        )
+
+    async def put_command_string(
+        req: Annotated[CommandRequest, Form()],
+        device: Device = Depends(common_device_finder(devices)),
+    ) -> Response[str]:
+
+        return Response[str].from_request(
+            req,
+            device.put_command_string(req),
+        )
+
     router.put(
         "/{device_type}/{device_number}/action",
         **common_endpoint_parameters,
@@ -153,5 +184,20 @@ def create_router(devices: List[Device]):
         "/{device_type}/{device_number}/supportedactions",
         **common_endpoint_parameters,
     )(get_supportedactions)
+
+    router.put(
+        "/{device_type}/{device_number}/commandblind",
+        **common_endpoint_parameters,
+    )(put_command_blind)
+
+    router.put(
+        "/{device_type}/{device_number}/commandbool",
+        **common_endpoint_parameters,
+    )(put_command_bool)
+
+    router.put(
+        "/{device_type}/{device_number}/commandstring",
+        **common_endpoint_parameters,
+    )(put_command_string)
 
     return router
