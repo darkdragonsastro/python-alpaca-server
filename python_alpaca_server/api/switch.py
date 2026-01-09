@@ -98,6 +98,15 @@ def create_router(devices: List[Device]):
             device.get_maxswitchvalue(req),
         )
 
+    async def get_switchstep(
+        req: Annotated[IdRequest, Query()],
+        device: Switch = Depends(device_finder(devices, UrlDeviceType.Switch)),
+    ) -> Response[float]:
+        return Response[float].from_request(
+            req,
+            device.get_switchstep(req),
+        )
+
     async def put_setswitch(
         req: Annotated[PutIdStateRequest, Query()],
         device: Switch = Depends(device_finder(devices, UrlDeviceType.Switch)),
@@ -164,6 +173,11 @@ def create_router(devices: List[Device]):
         "/switch/{device_number}/maxswitchvalue",
         **common_endpoint_parameters,
     )(get_maxswitchvalue)
+
+    router.get(
+        "/switch/{device_number}/switchstep",
+        **common_endpoint_parameters,
+    )(get_switchstep)
 
     router.put(
         "/switch/{device_number}/setswitch",
