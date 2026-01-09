@@ -2,7 +2,7 @@
 #
 # Python project using Poetry for dependency management
 
-.PHONY: test lint typecheck build format install audit lock bump commit
+.PHONY: test lint typecheck build format install audit lock bump commit publish
 
 # Run the full test suite
 test:
@@ -44,3 +44,7 @@ bump:
 # Create commit using commitizen
 commit:
 	cz commit
+
+# Publish to PyPI
+publish: build
+	poetry publish
