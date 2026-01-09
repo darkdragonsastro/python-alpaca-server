@@ -47,6 +47,10 @@ class Switch(Device):
         raise NotImplementedError(req)
 
     @abstractmethod
+    def get_switchstep(self, req: IdRequest) -> float:
+        raise NotImplementedError(req)
+
+    @abstractmethod
     def put_setswitch(self, req: PutIdStateRequest) -> None:
         raise NotImplementedError(req)
 
