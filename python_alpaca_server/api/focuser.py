@@ -68,8 +68,8 @@ def create_router(devices: List[Device]):
     async def get_stepsize(
         req: Annotated[CommonRequest, Query()],
         device: Focuser = Depends(device_finder(devices, UrlDeviceType.Focuser)),
-    ) -> Response[int]:
-        return Response[int].from_request(
+    ) -> Response[float]:
+        return Response[float].from_request(
             req,
             device.get_stepsize(req),
         )

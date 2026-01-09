@@ -29,7 +29,7 @@ class Focuser(Device):
         raise NotImplementedError(req)
 
     @abstractmethod
-    def get_stepsize(self, req: CommonRequest) -> int:
+    def get_stepsize(self, req: CommonRequest) -> float:
         raise NotImplementedError(req)
 
     @abstractmethod
