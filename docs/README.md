@@ -32,6 +32,16 @@
   - [RightAscensionRate and DeclinationRate](ascom-faq.md#rightascensionrate-and-declinationrate)
   - [Camera State Diagram](ascom-faq.md#camera-state-diagram)
   - [Mandatory, Optional and Deprecated](ascom-faq.md#mandatory-optional-and-deprecated)
+- [Alpaca API Reference](ascom-alpaca-api-reference.md)
+  - [Introduction](ascom-alpaca-api-reference.md#1-introduction)
+  - [Alpaca Device API Contract](ascom-alpaca-api-reference.md#2-alpaca-device-api-contract)
+  - [HTTP Headers](ascom-alpaca-api-reference.md#3-http-headers)
+  - [Alpaca Device Management](ascom-alpaca-api-reference.md#4-alpaca-device-management)
+  - [Alpaca Discovery](ascom-alpaca-api-reference.md#5-alpaca-discovery)
+  - [Alpaca Client Considerations](ascom-alpaca-api-reference.md#6-alpaca-client-considerations)
+  - [ASCOM APIs - Essential Concepts](ascom-alpaca-api-reference.md#7-ascom-apis---essential-concepts)
+  - [Alpaca Camera ImageBytes Reference](ascom-alpaca-api-reference.md#8-alpaca-camera-imagebytes-reference)
+  - [Document Revision Log](ascom-alpaca-api-reference.md#9-document-revision-log)
 
 ## ASCOM Interface Reference
 
