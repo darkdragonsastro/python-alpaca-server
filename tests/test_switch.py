@@ -104,6 +104,21 @@ class MockSwitch(Switch):
     def put_setswitchvalue(self, req: PutIdValueRequest) -> None:
         pass
 
+    def get_canasync(self, req: IdRequest) -> bool:
+        return False
+
+    def get_statechangecomplete(self, req: IdRequest) -> bool:
+        return True
+
+    def put_cancelasync(self, req: IdRequest) -> None:
+        pass
+
+    def put_setasync(self, req: PutIdStateRequest) -> None:
+        pass
+
+    def put_setasyncvalue(self, req: PutIdValueRequest) -> None:
+        pass
+
 
 class TestSwitchStepProperty:
     """Tests for the switchstep property on Switch devices."""

@@ -134,6 +134,51 @@ def create_router(devices: List[Device]):
             device.put_setswitchvalue(req),
         )
 
+    async def get_canasync(
+        req: Annotated[IdRequest, Query()],
+        device: Switch = Depends(device_finder(devices, UrlDeviceType.Switch)),
+    ) -> Response[bool]:
+        return Response[bool].from_request(
+            req,
+            device.get_canasync(req),
+        )
+
+    async def get_statechangecomplete(
+        req: Annotated[IdRequest, Query()],
+        device: Switch = Depends(device_finder(devices, UrlDeviceType.Switch)),
+    ) -> Response[bool]:
+        return Response[bool].from_request(
+            req,
+            device.get_statechangecomplete(req),
+        )
+
+    async def put_cancelasync(
+        req: Annotated[IdRequest, Query()],
+        device: Switch = Depends(device_finder(devices, UrlDeviceType.Switch)),
+    ) -> Response[None]:
+        return Response[None].from_request(
+            req,
+            device.put_cancelasync(req),
+        )
+
+    async def put_setasync(
+        req: Annotated[PutIdStateRequest, Query()],
+        device: Switch = Depends(device_finder(devices, UrlDeviceType.Switch)),
+    ) -> Response[None]:
+        return Response[None].from_request(
+            req,
+            device.put_setasync(req),
+        )
+
+    async def put_setasyncvalue(
+        req: Annotated[PutIdValueRequest, Query()],
+        device: Switch = Depends(device_finder(devices, UrlDeviceType.Switch)),
+    ) -> Response[None]:
+        return Response[None].from_request(
+            req,
+            device.put_setasyncvalue(req),
+        )
+
     router.get(
         "/switch/{device_number}/maxswitch",
         **common_endpoint_parameters,
@@ -193,5 +238,30 @@ def create_router(devices: List[Device]):
         "/switch/{device_number}/setswitchvalue",
         **common_endpoint_parameters,
     )(put_setswitchvalue)
+
+    router.get(
+        "/switch/{device_number}/canasync",
+        **common_endpoint_parameters,
+    )(get_canasync)
+
+    router.get(
+        "/switch/{device_number}/statechangecomplete",
+        **common_endpoint_parameters,
+    )(get_statechangecomplete)
+
+    router.put(
+        "/switch/{device_number}/cancelasync",
+        **common_endpoint_parameters,
+    )(put_cancelasync)
+
+    router.put(
+        "/switch/{device_number}/setasync",
+        **common_endpoint_parameters,
+    )(put_setasync)
+
+    router.put(
+        "/switch/{device_number}/setasyncvalue",
+        **common_endpoint_parameters,
+    )(put_setasyncvalue)
 
     return router
