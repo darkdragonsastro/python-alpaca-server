@@ -1,7 +1,7 @@
 import sys
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import List, Optional
+from typing import Any, List, Optional
 
 if sys.version_info >= (3, 9):
     from typing import Annotated
@@ -42,6 +42,21 @@ class UrlDeviceType(str, Enum):
     SafetyMonitor = "safetymonitor"
     Switch = "switch"
     Telescope = "telescope"
+
+
+class StateValue(BaseModel):
+    """A name/value pair for device state.
+
+    Used by ``get_devicestate()`` to return aggregated device state
+    for reduced polling overhead.
+
+    Attributes:
+        Name: The property name (e.g., "IsSafe", "Temperature").
+        Value: The property value. Can be any JSON-serializable type.
+    """
+
+    Name: str
+    Value: Any
 
 
 class Device(ABC):
@@ -321,6 +336,78 @@ class Device(ABC):
             actions are supported.
 
         Raises:
+            DriverException: Raise for unexpected errors.
+        """
+        raise NotImplementedError(req)
+
+    @abstractmethod
+    def put_connect(self, req: CommonRequest) -> None:
+        """Connect to the device asynchronously.
+
+        Implement this to initiate a non-blocking connection. On return,
+        ``get_connecting()`` must return True unless already connected.
+        Clients poll ``get_connecting()`` to determine when connection completes.
+
+        Args:
+            req: The Alpaca request containing client/transaction IDs.
+
+        Raises:
+            DriverException: Raise if the connection cannot be initiated.
+        """
+        raise NotImplementedError(req)
+
+    @abstractmethod
+    def put_disconnect(self, req: CommonRequest) -> None:
+        """Disconnect from the device asynchronously.
+
+        Implement this to initiate a non-blocking disconnection. On return,
+        ``get_connecting()`` must return True unless already disconnected.
+        Clients poll ``get_connecting()`` to determine when disconnection completes.
+
+        Args:
+            req: The Alpaca request containing client/transaction IDs.
+
+        Raises:
+            DriverException: Raise if the disconnection cannot be initiated.
+        """
+        raise NotImplementedError(req)
+
+    @abstractmethod
+    def get_connecting(self, req: CommonRequest) -> bool:
+        """Return whether an async connect/disconnect operation is in progress.
+
+        Implement this to indicate when ``put_connect()`` or ``put_disconnect()``
+        operations are still in progress. Return False when the operation
+        completes or if no async operation is active.
+
+        Args:
+            req: The Alpaca request containing client/transaction IDs.
+
+        Returns:
+            True while connecting or disconnecting, False otherwise.
+
+        Raises:
+            DriverException: Raise for unexpected errors.
+        """
+        raise NotImplementedError(req)
+
+    @abstractmethod
+    def get_devicestate(self, req: CommonRequest) -> List["StateValue"]:
+        """Return aggregated device state for reduced polling.
+
+        Implement this to return a list of name/value pairs representing
+        the device's current operational state. The specific properties
+        returned depend on the device type.
+
+        Args:
+            req: The Alpaca request containing client/transaction IDs.
+
+        Returns:
+            List of StateValue objects with device-specific properties.
+            Include a "TimeStamp" entry with the current UTC time.
+
+        Raises:
+            NotConnectedException: Raise if the device is not connected.
             DriverException: Raise for unexpected errors.
         """
         raise NotImplementedError(req)

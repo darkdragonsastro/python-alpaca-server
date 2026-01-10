@@ -9,7 +9,7 @@ else:
 import structlog
 from fastapi import APIRouter, Depends, Form, Query
 
-from ..device import Device, common_device_finder
+from ..device import Device, StateValue, common_device_finder
 from ..errors import NotImplementedError
 from ..request import ActionRequest, CommandRequest, CommonRequest, PutConnectedRequest
 from ..response import Response, common_endpoint_parameters
@@ -139,6 +139,48 @@ def create_router(devices: List[Device]):
             device.put_command_string(req),
         )
 
+    async def put_connect(
+        req: Annotated[CommonRequest, Form()],
+        device: Device = Depends(common_device_finder(devices)),
+    ) -> Response[None]:
+        device.put_connect(req)
+
+        return Response[None].from_request(
+            req,
+            None,
+        )
+
+    async def put_disconnect(
+        req: Annotated[CommonRequest, Form()],
+        device: Device = Depends(common_device_finder(devices)),
+    ) -> Response[None]:
+        device.put_disconnect(req)
+
+        return Response[None].from_request(
+            req,
+            None,
+        )
+
+    async def get_connecting(
+        req: Annotated[CommonRequest, Query()],
+        device: Device = Depends(common_device_finder(devices)),
+    ) -> Response[bool]:
+
+        return Response[bool].from_request(
+            req,
+            device.get_connecting(req),
+        )
+
+    async def get_devicestate(
+        req: Annotated[CommonRequest, Query()],
+        device: Device = Depends(common_device_finder(devices)),
+    ) -> Response[List[StateValue]]:
+
+        return Response[List[StateValue]].from_request(
+            req,
+            device.get_devicestate(req),
+        )
+
     router.put(
         "/{device_type}/{device_number}/action",
         **common_endpoint_parameters,
@@ -199,5 +241,27 @@ def create_router(devices: List[Device]):
         "/{device_type}/{device_number}/commandstring",
         **common_endpoint_parameters,
     )(put_command_string)
+
+    router.put(
+        "/{device_type}/{device_number}/connect",
+        **common_endpoint_parameters,
+    )(put_connect)
+
+    router.put(
+        "/{device_type}/{device_number}/disconnect",
+        **common_endpoint_parameters,
+    )(put_disconnect)
+
+    router.get(
+        "/{device_type}/{device_number}/connecting",
+        **common_endpoint_parameters,
+        response_model=Response[bool],
+    )(get_connecting)
+
+    router.get(
+        "/{device_type}/{device_number}/devicestate",
+        **common_endpoint_parameters,
+        response_model=Response[List[StateValue]],
+    )(get_devicestate)
 
     return router

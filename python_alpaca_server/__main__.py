@@ -1,6 +1,8 @@
+from datetime import datetime, timezone
 from typing import List
 
 from .app import AlpacaServer, Description
+from .device import StateValue
 from .devices.safetymonitor import SafetyMonitor
 from .errors import NotImplementedError
 from .request import ActionRequest, CommandRequest, CommonRequest, PutConnectedRequest
@@ -52,6 +54,24 @@ class MySafetyMonitor(SafetyMonitor):
             return False
 
         return True
+
+    def put_connect(self, req: CommonRequest) -> None:
+        self._connected = True
+
+    def put_disconnect(self, req: CommonRequest) -> None:
+        self._connected = False
+
+    def get_connecting(self, req: CommonRequest) -> bool:
+        return False
+
+    def get_devicestate(self, req: CommonRequest) -> List[StateValue]:
+        return [
+            StateValue(Name="IsSafe", Value=self.get_issafe(req)),
+            StateValue(
+                Name="TimeStamp",
+                Value=datetime.now(timezone.utc).isoformat(),
+            ),
+        ]
 
 
 def get_server_description() -> Description:

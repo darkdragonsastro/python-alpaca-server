@@ -7,7 +7,7 @@ from fastapi.testclient import TestClient
 
 from python_alpaca_server.app import AlpacaServer
 from python_alpaca_server.api.management import Description
-from python_alpaca_server.device import DeviceType
+from python_alpaca_server.device import DeviceType, StateValue
 from python_alpaca_server.devices.safetymonitor import SafetyMonitor
 from python_alpaca_server.devices.observingconditions import ObservingConditions
 from python_alpaca_server.devices.focuser import Focuser
@@ -76,6 +76,18 @@ class MockSafetyMonitor(SafetyMonitor):
 
     def get_issafe(self, req):
         return True
+
+    def put_connect(self, req):
+        pass
+
+    def put_disconnect(self, req):
+        pass
+
+    def get_connecting(self, req):
+        return False
+
+    def get_devicestate(self, req) -> List[StateValue]:
+        return [StateValue(Name="IsSafe", Value=True)]
 
 
 class MockObservingConditions(ObservingConditions):
@@ -174,6 +186,18 @@ class MockObservingConditions(ObservingConditions):
     def get_timesincelastupdate(self, req):
         return 0.0
 
+    def put_connect(self, req):
+        pass
+
+    def put_disconnect(self, req):
+        pass
+
+    def get_connecting(self, req):
+        return False
+
+    def get_devicestate(self, req) -> List[StateValue]:
+        return [StateValue(Name="Temperature", Value=20.0)]
+
 
 class MockFocuser(Focuser):
     """Minimal Focuser implementation for testing."""
@@ -252,6 +276,18 @@ class MockFocuser(Focuser):
 
     def put_move(self, req):
         pass
+
+    def put_connect(self, req):
+        pass
+
+    def put_disconnect(self, req):
+        pass
+
+    def get_connecting(self, req):
+        return False
+
+    def get_devicestate(self, req) -> List[StateValue]:
+        return [StateValue(Name="Position", Value=25000)]
 
 
 def _get_route_paths(app) -> List[str]:
