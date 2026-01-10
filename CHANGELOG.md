@@ -1,3 +1,15 @@
+## 1.3.0 (2026-01-09)
+
+### Feat
+
+- **switch**: add ISwitchV3 async endpoints
+- **covercalibrator**: add ICoverCalibratorV2 async endpoints (#18)
+- add command* router endpoints to common API (#17)
+
+### Fix
+
+- change Focuser.stepsize return type from int to float (#16)
+
 ## 1.2.0 (2026-01-09)
 
 ### Feat
