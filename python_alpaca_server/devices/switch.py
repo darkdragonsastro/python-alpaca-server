@@ -61,3 +61,23 @@ class Switch(Device):
     @abstractmethod
     def put_setswitchvalue(self, req: PutIdValueRequest) -> None:
         raise NotImplementedError(req)
+
+    @abstractmethod
+    def get_canasync(self, req: IdRequest) -> bool:
+        raise NotImplementedError(req)
+
+    @abstractmethod
+    def get_statechangecomplete(self, req: IdRequest) -> bool:
+        raise NotImplementedError(req)
+
+    @abstractmethod
+    def put_cancelasync(self, req: IdRequest) -> None:
+        raise NotImplementedError(req)
+
+    @abstractmethod
+    def put_setasync(self, req: PutIdStateRequest) -> None:
+        raise NotImplementedError(req)
+
+    @abstractmethod
+    def put_setasyncvalue(self, req: PutIdValueRequest) -> None:
+        raise NotImplementedError(req)
