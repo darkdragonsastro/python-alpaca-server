@@ -1,7 +1,7 @@
 # python-alpaca-server
 
 This is an easy to use Python server for ASCOM Alpaca. It can be run on any
-system that running Python 3.12 or higher, including a Raspberry Pi. This allows
+system that running Python 3.8 or higher, including a Raspberry Pi. This allows
 you to easily create new ASCOM Alpaca devices.
 
 Nothing complicated here, just create a new class that implements your logic and
