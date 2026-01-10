@@ -1,3 +1,14 @@
+## 2.0.0 (2026-01-09)
+
+### BREAKING CHANGE
+
+- Device implementations must now implement put_connect(),
+put_disconnect(), get_connecting(), and get_devicestate() methods.
+
+### Feat
+
+- add Platform 7 common endpoints (connect, disconnect, connecting, devicestate)
+
 ## 1.3.0 (2026-01-09)
 
 ### Feat
