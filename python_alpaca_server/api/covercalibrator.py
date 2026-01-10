@@ -31,6 +31,17 @@ def create_router(devices: List[Device]):
             device.get_brightness(req),
         )
 
+    async def get_calibratorchanging(
+        req: Annotated[CommonRequest, Query()],
+        device: CoverCalibrator = Depends(
+            device_finder(devices, UrlDeviceType.CoverCalibrator)
+        ),
+    ) -> Response[bool]:
+        return Response[bool].from_request(
+            req,
+            device.get_calibratorchanging(req),
+        )
+
     async def get_calibratorstate(
         req: Annotated[CommonRequest, Query()],
         device: CoverCalibrator = Depends(
@@ -40,6 +51,17 @@ def create_router(devices: List[Device]):
         return Response[CalibratorState].from_request(
             req,
             device.get_calibratorstate(req),
+        )
+
+    async def get_covermoving(
+        req: Annotated[CommonRequest, Query()],
+        device: CoverCalibrator = Depends(
+            device_finder(devices, UrlDeviceType.CoverCalibrator)
+        ),
+    ) -> Response[bool]:
+        return Response[bool].from_request(
+            req,
+            device.get_covermoving(req),
         )
 
     async def get_coverstate(
@@ -125,9 +147,19 @@ def create_router(devices: List[Device]):
     )(get_brightness)
 
     router.get(
+        "/covercalibrator/{device_number}/calibratorchanging",
+        **common_endpoint_parameters,
+    )(get_calibratorchanging)
+
+    router.get(
         "/covercalibrator/{device_number}/calibratorstate",
         **common_endpoint_parameters,
     )(get_calibratorstate)
+
+    router.get(
+        "/covercalibrator/{device_number}/covermoving",
+        **common_endpoint_parameters,
+    )(get_covermoving)
 
     router.get(
         "/covercalibrator/{device_number}/coverstate",
