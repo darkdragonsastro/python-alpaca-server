@@ -1,10 +1,13 @@
 """Tests for Switch device switchstep property."""
 
+from typing import List
+
 import pytest
 from fastapi.testclient import TestClient
 
 from python_alpaca_server.app import AlpacaServer
 from python_alpaca_server.api.management import Description
+from python_alpaca_server.device import StateValue
 from python_alpaca_server.devices.switch import Switch
 from python_alpaca_server.request import (
     CommonRequest,
@@ -118,6 +121,18 @@ class MockSwitch(Switch):
 
     def put_setasyncvalue(self, req: PutIdValueRequest) -> None:
         pass
+
+    def put_connect(self, req):
+        pass
+
+    def put_disconnect(self, req):
+        pass
+
+    def get_connecting(self, req):
+        return False
+
+    def get_devicestate(self, req) -> List[StateValue]:
+        return [StateValue(Name="MaxSwitch", Value=4)]
 
 
 class TestSwitchStepProperty:
